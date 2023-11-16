@@ -1,0 +1,15 @@
+﻿ @model IEnumerable<Category>
+            <div class="col-lg-3">
+                    <div class="hero__categories">
+                        <div class="hero__categories__all">
+                            <i class="fa fa-bars"></i>
+                            <span>All departments</span>
+                        </div>
+                        <ul>
+                             @foreach(var item in Model)
+                                {
+                                    <li><a asp-controller="Products" asp-action="ProductInCategory" asp-route-CategoryId="@item.Id">@item.CategoryName</a></li>
+                                }
+                        </ul>
+                    </div>
+                </div>

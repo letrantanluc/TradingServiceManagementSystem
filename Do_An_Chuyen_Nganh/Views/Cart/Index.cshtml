@@ -1,0 +1,166 @@
+﻿@model List<Do_An_Chuyen_Nganh.Models.CartItem>
+
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">Products</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="shoping__cart__item">
+                                        <img src="img/cart/cart-1.jpg" alt="">
+                                        <h5>@item.ProductName</h5>
+                                    </td>
+                                    <td class="shoping__cart__price">
+                                        @item.Price.ToString("N0")đ
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input type="text" value="1">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="shoping__cart__total">
+                                        @((item.Price * item.Quantity).ToString("N0"))đ
+                                    </td>
+                                    <td class="shoping__cart__item__close">
+                                        <span class="remove icon_close" data-item-cart-id=" @item.Id"></span>
+                                    </td>
+                                </tr>
+                            }
+                           
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__btns">
+                   
+                    <a href="#" class="primary-btn cart-btn cart-btn-right clear">
+                        <span class="icon_loading"></span>
+                        Clear Cart
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__continue">
+                    <div class="shoping__discount">
+                        <h5>Discount Codes</h5>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your coupon code">
+                            <button type="submit" class="site-btn">APPLY COUPON</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Cart Total</h5>
+                    <ul>
+                        <li>Subtotal <span>@Model.Sum(item => (item.Price * item.Quantity)).ToString("N0")đ</span></li>
+                        <li>Total <span>@Model.Sum(item => (item.Price * item.Quantity)).ToString("N0")đ</span></li>
+                    </ul>
+                    <a href="/Order/CheckOut" class="primary-btn">PROCEED TO CHECKOUT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    $(function () {
+                $('.remove').on('click', function () {
+                    var cartItemId = $(this).data('item-cart-id');
+                    $.ajax({
+                        url: '@Url.Action("RemoveFromCart", "Cart")',
+                        type: 'POST',
+                        data: { cartItemId: cartItemId },
+                        success: function (result) {
+                            if (result.success) {
+                                location.reload();
+                            }
+                        }
+                    });
+                });
+
+                $('.clear').on('click', function () {
+                    $.ajax({
+                        url: '@Url.Action("ClearCart", "Cart")',
+                        type: 'POST',
+                        success: function (result) {
+                            if (result.success) {
+                                location.reload();
+                            }
+                        }
+                    });
+                });
+            });
+</script>
+
+
+
+<script type="text/javascript">
+    // Plus number quantiy product detail
+    var plusQuantity = function (ProductId) {
+        if (jQuery('input[id="quantity_' + ProductId + '"]').val() != undefined) {
+            var currentVal = parseInt(jQuery('input[id="quantity_' + ProductId + '"]').val());
+            if (!isNaN(currentVal)) {
+                jQuery('input[id="quantity_' + ProductId + '"]').val(currentVal + 1);
+            } else {
+                jQuery('input[id="quantity_' + ProductId + '"]').val(1);
+            }
+            updateCart('' + ProductId + '');
+        } else {
+            console.log('error: Not see elemnt ' + jQuery('input[id="quantity_' + ProductId + '"]').val());
+        }
+    }
+    function updateCart(itemId) {
+        var quantity = $("#quantity_" + itemId + "").val();
+        $.ajax({
+            type: "POST",
+            url: "/Cart/UpdateCart",
+            data: { itemId: itemId, quantity: quantity },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                location.reload();
+            },
+            error: function () {
+                console.log("Failed to update cart!");
+            }
+        });
+    }
+
+    // Minus number quantiy product detail
+    var minusQuantity = function (ProductId) {
+        if (jQuery('input[id="quantity_' + ProductId + '"]').val() != undefined) {
+            var currentVal = parseInt(jQuery('input[id="quantity_' + ProductId + '"]').val());
+            if (!isNaN(currentVal) && currentVal > 1) {
+                jQuery('input[id="quantity_' + ProductId + '"]').val(currentVal - 1);
+            } else {
+                jQuery('input[id="quantity_' + ProductId + '"]').val(1);
+            }
+            updateCart('' + ProductId + '');
+        } else {
+            console.log('error: Not see elemnt ' + jQuery('input[]').val());
+        }
+    }
+</script>
