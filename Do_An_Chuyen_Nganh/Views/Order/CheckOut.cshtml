@@ -1,20 +1,15 @@
 ﻿@model Do_An_Chuyen_Nganh.Models.Order
 
-
 @{
-  
     List<Do_An_Chuyen_Nganh.Models.CartItem> carts = ViewBag.Carts as List<Do_An_Chuyen_Nganh.Models.CartItem>;
 }
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/LayoutAdmin/clients/dist/js/api_tinh_thanhpho.js"></script>
+
 <section class="checkout spad">
     <div class="container">
-        @*<div class="row">
-            <div class="col-lg-12">
-                <h6>
-                    <span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click here</a> to enter your code
-                </h6>
-            </div>
-        </div>*@
         <div class="checkout__form">
             <h4>Billing Details</h4>
             <form action="@Url.Action("CheckOut", "Order")" method="post">
@@ -26,20 +21,48 @@
                         </div>
                         <div class="checkout__input">
                             <p>Address<span>*</span></p>
-                            <input type="text" name="Address" value="@Model.Address" placeholder="Street Address" class="checkout__input__add ">
+                            <div class="address_section" style="display:flex; margin-bottom: 10px">
+                                <form action="">
+                                    <select class="nice-select" id="province" style="margin-right:20px" onchange="updateAddressPreview()">Tỉnh/Thành Phố</select>
+                                    <select class="nice-select" id="district" style="margin-right:20px" onchange="updateAddressPreview()">
+                                        <option value="">Quận/Huyện</option>
+                                    </select>
+                                    <select class="nice-select" id="ward" onchange="updateAddressPreview()">
+                                        <option value="">Phường</option>
+                                    </select>
+                                </form>
+                            </div>
+                            <div class="address_input">
+                                <input name="Diachi" type="text" value="@Model.Address" placeholder="446 Đường Rạch Gầm Xoài Mút" oninput="updateAddressInput(this)">
+                            </div>
+                            <div class="address-info">
+                                <div class="address-final">
+                                    <div class="sonha">
+                                        <span id="modelAddress">@Model.Address</span>
+                                    </div>
+                                    <div class="diachitrave">
+                                        <span id="result"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <input name="Address" type="hidden" />
+                            <h5 id="addressPreview"></h5>
+
+                            <!-- Hidden input để lưu giữ giá trị mới của @Model.Address -->
+                            <input type="hidden" name="UpdatedAddress" id="UpdatedAddress" value="@Model.Address" />
                         </div>
+
                         <div class="checkout__input">
                             <p>PhoneNumber<span>*</span></p>
                             <input type="text" name="PhoneNumber" value="@Model.PhoneNumber" placeholder="090xxxxxxxx">
                         </div>
                         <div class="checkout__input">
-                             <p>Email<span>*</span></p>
+                            <p>Email<span>*</span></p>
                             <input type="text" name="Email" value="@Model.Email" placeholder="abc@gmail.com">
                         </div>
                         <div class="checkout__input">
-                                <p>Order notes<span></span></p>
-                                <input type="text"
-                                    placeholder="Notes about your order, e.g. special notes for delivery.">
+                            <p>Order notes<span></span></p>
+                            <input type="text" placeholder="Notes about your order, e.g. special notes for delivery.">
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
@@ -51,7 +74,6 @@
                                 {
                                     <li>@item.ProductName<span>@item.Price.ToString("N0")đ</span></li>
                                 }
-                               
                             </ul>
                             <div class="checkout__order__subtotal">Subtotal <span>@carts.Sum(item => (item.Price * item.Quantity)).ToString("N0")đ</span></div>
                             <div class="checkout__order__total">Total <span>@carts.Sum(item => (item.Price * item.Quantity)).ToString("N0")đ</span></div>
@@ -65,7 +87,6 @@
                             </div>
                             <div>
                                 <label for="payment">
-                                    
                                     <input type="radio" id="momo" name="Payment" value="momo">
                                     <span class="checkmark"></span>
                                     Momo
@@ -73,7 +94,6 @@
                             </div>
                             <div>
                                 <label for="payment">
-
                                     <input type="radio" id="vnpay" name="Payment" value="vnpay">
                                     <span class="checkmark"></span>
                                     VnPay
@@ -87,3 +107,32 @@
         </div>
     </div>
 </section>
+<style>
+    .nice-select {
+        display: none;
+    }
+</style>
+<script>
+    function updateAddressInput(inputElement) {
+        var wardText = $("#ward option:selected").text();
+        var districtText = $("#district option:selected").text();
+        var provinceText = $("#province option:selected").text();
+
+        // Lưu giữ giá trị của result
+        var result = "";
+        if (districtText != "" && provinceText != "" && wardText != "") {
+            result = wardText + ", " + districtText + ", " + provinceText;
+        }
+
+        var modelAddress = inputElement.value;
+
+        // Hiển thị giá trị của modelAddress vào #modelAddress
+        //$(".sonha #modelAddress").text(modelAddress);
+
+        // Hiển thị giá trị của result
+        //$(".diachitrave #result").text(result);
+
+        // Cập nhật giá trị của hidden input
+        $('input[name="Address"]').val(modelAddress + ", " + result);
+    }
+</script>
