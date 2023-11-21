@@ -1,4 +1,4 @@
-﻿using BaseProject.Controllers;
+﻿using Do_An_Chuyen_Nganh.Controllers;
 using Do_An_Chuyen_Nganh.Data;
 using Do_An_Chuyen_Nganh.Infrastructure;
 using Do_An_Chuyen_Nganh.Models;
@@ -263,6 +263,10 @@ namespace Do_An_Chuyen_Nganh.Controllers
         public ActionResult CheckOutError()
         {
             // Thông báo lỗi cho người dùng hoặc thực hiện các xử lý khác
+            return View();
+        }
+        public ActionResult DangTin()
+        {
             return View();
         }
     }

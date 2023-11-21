@@ -1,0 +1,167 @@
+﻿@using Do_An_Chuyen_Nganh.Models.ViewModels;
+@model IEnumerable<Do_An_Chuyen_Nganh.Models.Order>
+
+@{
+    ViewData["Title"] = "Đăng Tin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="~/LayoutUser/clients/css/dangtin.css">
+<section class="container">
+    <div class="card">
+        <h2>Đăng tin mới</h2>
+        <div class="card__body ">
+            <form method="post" class="form-ajax" enctype="multipart/form-data">
+                <section>
+                    <b>Thông tin bắt buộc</b>
+                    <div class="form-control form-control-category_id">
+                        <select class="select mselect isDropdown hasValue required" name="category_id">
+                            <option value=""></option>
+                            <option value="1">Bất động sản</option>
+                            <option value="2">Đồ điện tử</option>
+                            <option value="3">Đồ gia dụng</option>
+                            <option value="4">Dịch vụ</option>
+                            <option value="5">Mẹ và bé</option>
+                            <option value="6">Thú cưng</option>
+                            <option value="7">Đồ ăn</option>
+                            <option value="8">Điện lạnh</option>
+                            <option value="9">Thời trang</option>
+                            <option value="10">Văn phòng</option>
+                            <option value="11">Cho tặng miễn phí</option>
+                            <option value="12">Khác</option>
+                        </select>
+                        <label for="category_id">Danh mục</label>
+                    </div>
+                    <div class="d-flex-wrap grid-2 gap-10">
+                        <div class="form-control form-control-name ">
+                            <input class="minput  " name="name" type="text" placeholder="" inputmode="text" value="" maxlength="">
+                            <label class="category_id" for="name">Tiêu đề</label>
+                            <button tabindex="-1" type="button" class="btn-close">
+                            </button>
+                        </div>
+                        <div class="form-control form-control-price ">
+                            <input class="minput category_id " name="price" type="text" placeholder="" inputmode="decimal" value="" maxlength="">
+                            <label for="price">Giá bán</label>
+                            <button tabindex="-1" type="button" class="btn-close">
+                            </button>
+                            <p class="validate validate-price"></p>
+                        </div>
+                    </div>
+                    <div class=" form-textarea form-control form-control-content">
+                        <div class="focus-capture"></div>
+                        <textarea class="required sodjbf4" inputmode="text" id="field-content" name="content" placeholder=""></textarea>
+                        <label for="field-content">Mô tả chi tiết</label>
+                    </div>
+                    <div>
+                        <b>Hình ảnh và Video sản phẩm</b>
+                        <div class="upload-files">
+                            <input type="file" name="files[]" id="files" accept="image/*" multiple class="hide" />
+
+                            <div class="preview">
+                            </div>
+                            <button class="btn btn-primary btn_addfile" type="button">
+                                <i class="fa fa-picture-o" aria-hidden="true"></i> Thêm ảnh
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <b>Địa chỉ</b>
+                    <div class="grid-3 gap-10">
+                        <div class="form-control selection">
+                            <input class="minput">
+                            <label for="province_id">Tỉnh/thành phố</label>
+                            <input class="input" type="hidden" name="province_id" value="">
+                            <ul class="selection__list">
+                            </ul>
+                        </div>
+                        <div class="form-control selection">
+                            <input class="minput">
+                            <label for="district_id">Quận/Huyện</label>
+                            <input class="input" type="hidden" name="district_id" value="">
+                            <ul class="selection__list">
+                            </ul>
+                        </div>
+
+                        <div class="form-control selection">
+                            <input class="minput">
+                            <label for="ward_id">Xã/phường</label>
+                            <input class="input" type="hidden" name="ward_id" value="">
+                            <ul class="selection__list">
+                            </ul>
+                        </div>
+                    </div>
+
+                    <b href="">Cài đặt địa chỉ</b>
+                    <div class="form-control form-control-address ">
+                        <input class="minput  " name="address" type="text" placeholder="" inputmode="text" value="" maxlength="">
+                        <label for="address">Địa chỉ chi tiết (Tên đường, Số nhà...)</label>
+                    </div>
+                </section>
+                <section>
+                    <b>Thông tin thêm <small>(càng chi tiết càng dễ bán hơn)</small></b>
+                    <div class="d-flex-wrap grid-2 gap-10">
+                        <div class="form-control ">
+                            <select class="select mselect isDropdown hasValue required" name="attr[state]">
+                                <option value=""></option>
+                                <option value="1">Mới</option>
+                                <option value="2">Đã sử dụng(chưa sửa chữa)</option>
+                                <option value="3">Đã sử dụng(đã sửa chữa)</option>
+                            </select>
+                            <label for="">Tình trạng</label>
+                        </div>
+                        <div class="form-control ">
+                            <select class="select mselect isDropdown hasValue required" name="attr[color]">
+                                <option value=""></option>
+                                <option value="0">Bạc</option>
+                                <option value="1">Đen</option>
+                                <option value="2">Đỏ</option>
+                                <option value="3">Hồng</option>
+                                <option value="4">Trắng</option>
+                                <option value="5">Vàng</option>
+                                <option value="6">Xám</option>
+                                <option value="7">Xanh dương</option>
+                                <option value="8">Xanh lá</option>
+                                <option value="9">Màu khác</option>
+                            </select>
+                            <label for="attr[color]">Màu sắc</label>
+                        </div>
+                        <div class="form-control ">
+                            <select class="select mselect isDropdown hasValue required" name="attr[guarantee]">
+                                <option value=""></option>
+                                <option value="1">Hết bảo hành</option>
+                                <option value="2">Còn bảo hành</option>
+                                <option value="3">Còn bảo hành trên 6 tháng</option>
+                            </select>
+                            <label for="attr[guarantee]">Bảo hành</label>
+
+                        </div>
+                        <div class="form-control form-control-attr[made_in]  ">
+                            <select class="select mselect isDropdown hasValue required" name="attr[made_in]">
+                                <option value=""></option>
+                                <option value="0">Việt Nam</option>
+                                <option value="1">Trung Quốc</option>
+                                <option value="2">Châu Âu</option>
+                                <option value="3">Mỹ</option>
+                                <option value="4">Nhật</option>
+                                <option value="5">Thái Lan</option>
+                                <option value="6">Hàn Quốc</option>
+                                <option value="7">Khác</option>
+                            </select>
+                            <label for="attr[made_in]">Xuất xứ</label>
+                        </div>
+                    </div>
+                </section>
+                <div class="d-flex justify-content-center gap-10">
+                    <a class="btn btn-back" href="https://sayo.vn/user/3219_vu-duc-hoai-nam_1700493387">
+                        Về danh sách
+                    </a>
+                    <button class="btn--primary btn-submit">
+                        ĐĂNG TIN
+                    </button>
+                </div>
+                <input type="hidden" name="_token" value="he41v9V4QX3i4IADzKTNKQzPYtdlUrHsKC0Nn59I" autocomplete="off">
+            </form>
+        </div>
+    </div>
+</section>

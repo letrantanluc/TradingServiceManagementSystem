@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BaseProject.Controllers
+namespace Do_An_Chuyen_Nganh.Controllers
 {
     public class BaseController<T> : Controller where T : class
     {
