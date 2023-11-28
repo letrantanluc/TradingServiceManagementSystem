@@ -27,7 +27,7 @@ namespace Do_An_Chuyen_Nganh.Controllers
             return _context.Set<T>().ToList();
         }
 
-        public T GetById(string Id)
+        public T GetById(int Id)
         {
             return _context.Set<T>().Find(Id);
         }

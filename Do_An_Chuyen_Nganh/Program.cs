@@ -1,32 +1,37 @@
 using Do_An_Chuyen_Nganh.Data;
 using Do_An_Chuyen_Nganh.Service.Payment;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
 
-var builder = WebApplication.CreateBuilder(args);
+var modelbuilder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+var connectionString = modelbuilder.Configuration.GetConnectionString("DefaultConnection");
+modelbuilder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+modelbuilder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+modelbuilder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    //.AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+
+modelbuilder.Services.AddControllersWithViews();
 
 //momo
-var momoSettings = builder.Configuration.GetSection("MomoSettings").Get<MomoSettings>();
-builder.Services.AddSingleton(momoSettings);
+var momoSettings = modelbuilder.Configuration.GetSection("MomoSettings").Get<MomoSettings>();
+modelbuilder.Services.AddSingleton(momoSettings);
 //---
 //VNPAY
-var vnpaySettings = builder.Configuration.GetSection("VNPaySettings").Get<VNPaySettings>();
-builder.Services.AddSingleton(vnpaySettings);
+var vnpaySettings = modelbuilder.Configuration.GetSection("VNPaySettings").Get<VNPaySettings>();
+modelbuilder.Services.AddSingleton(vnpaySettings);
 //--
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession();
+modelbuilder.Services.AddDistributedMemoryCache();
+modelbuilder.Services.AddSession();
+//modelbuilder.Services.AddScoped<RoleManager<IdentityRole>>();
 
-var app = builder.Build();
+var app = modelbuilder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
