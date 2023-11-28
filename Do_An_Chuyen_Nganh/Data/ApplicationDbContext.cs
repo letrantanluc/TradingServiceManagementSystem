@@ -20,7 +20,7 @@ namespace Do_An_Chuyen_Nganh.Data
        
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,Role, string>
     {
         
 
@@ -39,18 +39,8 @@ namespace Do_An_Chuyen_Nganh.Data
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<WishList> WishList { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
-
-
-
-        /*
-        protected override void OnModelCreating(ModelBuilder modelbuilder)
-        {
-
-            modelbuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
-
-            modelbuilder.Seed();
-        }
-        */
     }
+    
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Do_An_Chuyen_Nganh.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
 {
@@ -13,5 +14,6 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
         {
             return View();
         }
+        
     }
 }
