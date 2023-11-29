@@ -21,7 +21,7 @@
                             <tr>
                                 <th>Hành động</th>
                                 <th>Id</th>
-                                <th>Tên</th>
+                                <th>Tên danh mục</th>
                                 <th>Slug</th>
                                 <th>Danh mục cha</th>
                                 <th></th>
@@ -58,22 +58,24 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script>
     function removeDiacritics(str) {
         str = str.replace(/Đ/g, "D");
         str = str.replace(/đ/g, "d");
-        str = str.replace(/ /g, "-"); // replace space to "-"
+        str = str.replace(/ /g, "-"); // replace space with "-"
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
+
     function getSlug() {
         var name = $('#name').val();
         var result = removeDiacritics(name);
         $('#slug').val(result.toLowerCase());
     }
+
     function del(id) {
         if (confirm("Bạn chắc chắn muốn xóa?")) {
             $.ajax({
-                url: "@Url.Action("Delete", "ManageCategory")",
+                url: `/Admin/ManageCategory/Delete/${id}`, // Sửa URL endpoint
                 type: "POST",
                 data: { id: id },
                 success: function (response) {

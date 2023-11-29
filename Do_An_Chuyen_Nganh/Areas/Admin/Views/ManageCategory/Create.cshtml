@@ -12,7 +12,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CategoryName" class="control-label"></label>
-                <input name="CategoryName" class="form-control" />
+                <input name="CategoryName" class="form-control" onchange="getSlug();" />
                 <span asp-validation-for="CategoryName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -35,3 +35,17 @@
 <form method="get" asp-controller="ManageCategory" asp-action="Index">
     <button type="submit">Trở về Danh Sách</button>
 </form>
+
+<script type="text/javascript">
+    function removeDiacritics(str) {
+        str = str.replace(/Đ/g, "D");
+        str = str.replace(/đ/g, "d");
+        str = str.replace(/ /g, "-"); // replace space to "-"
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+    function getSlug() {
+        var name = $('#name').val();
+        var result = removeDiacritics(name);
+        $('#slug').val(result.toLowerCase());
+    }
+</script>

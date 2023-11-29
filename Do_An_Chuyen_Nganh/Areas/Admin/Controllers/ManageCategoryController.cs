@@ -68,55 +68,52 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
         }
         [Route("Edit")]
         [HttpGet("Edit/{id}")]
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<ActionResult> Edit(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return RedirectToAction("Index", "ManageCategory");
             }
 
-            var category = GetById(id.Value);
+            var checkId = GetById(Id.Value);
 
-            if (category == null)
+            if (checkId == null)
             {
                 return RedirectToAction("Index", "ManageCategory");
             }
 
+            Category category = GetById(Id.Value);
             ViewBag.Categories = GetAll().ToList();
-            return View(category);
+            return View(checkId);
         }
 
         [HttpPost("Edit/{id}")]
-        public async Task<ActionResult> Edit(int id, IFormCollection formCollection)
+        public async Task<ActionResult> Edit(IFormCollection formCollection)
         {
             List<string> errors = new List<string>();
             try
             {
+                var id = formCollection["Id"].ToString();
                 var name = formCollection["CategoryName"].ToString();
-                var slug = formCollection["slug"].ToString();
-                var parentId = formCollection["ParentId"].ToString();
+                var slug = formCollection["Slug"].ToString();
+                var parentId = formCollection["ParentId"];
 
                 var checkSlug = _context.Categories.Count(x => x.Slug == slug);
                 var getCategoryContainsSlug = _context.Categories.FirstOrDefault(x => x.Slug == slug);
-
                 if (string.IsNullOrEmpty(name))
                 {
                     errors.Add("Chưa nhập tên danh mục");
                 }
-
-                if (checkSlug > 0 && getCategoryContainsSlug.Id != id)
+                if (checkSlug > 0 && getCategoryContainsSlug.Id != Convert.ToInt32(id))
                 {
                     errors.Add("Slug đã tồn tại");
                 }
-
                 if (errors.Count == 0)
                 {
-                    var category = GetById(id);
-
+                    var category = GetById(Int32.Parse(formCollection["Id"]));
                     category.CategoryName = name;
                     category.Slug = slug;
-                    category.ParentId = Convert.ToInt32(parentId);
-
+                    category.ParentId = Int32.Parse(parentId);
                     Update(category);
                 }
             }
@@ -125,8 +122,38 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
                 errors.Add(ex.Message);
             }
             TempData["Errors"] = errors;
-
             return RedirectToAction("Index", "ManageCategory");
         }
+
+        [HttpPost("Delete/{id}")]
+        public async Task<ActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return Json(new { success = false, message = "ID không hợp lệ" });
+            }
+
+            try
+            {
+                Category category = GetById(id.Value);
+
+                if (category == null)
+                {
+                    return Json(new { success = false, message = "Danh mục không tồn tại" });
+                }
+
+                // Assuming that your Remove method works correctly
+                Remove(category);
+
+                return Json(new { success = true, message = "Xóa danh mục thành công" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes
+                Console.WriteLine(ex.Message);
+                return Json(new { success = false, message = "Lỗi khi xóa danh mục" });
+            }
+        }
+
     }
 }
