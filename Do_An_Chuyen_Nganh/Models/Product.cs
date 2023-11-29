@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Do_An_Chuyen_Nganh.Data;
 
 namespace Do_An_Chuyen_Nganh.Models
 {
@@ -20,7 +21,7 @@ namespace Do_An_Chuyen_Nganh.Models
         [Required(ErrorMessage = "Giá  không được để trống")]
         public decimal Price { get; set; }
 
-        public string? image { get; set; }
+    
 
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
@@ -40,16 +41,26 @@ namespace Do_An_Chuyen_Nganh.Models
         public Provenience? Provenience { get; set; }
 
         [Required(ErrorMessage = "Số lượng  không được để trống")]
+
         public int Quantity { get; set; }
+        [Required(ErrorMessage = "Địa chỉ không được để trống")]
+        public string? Address { get; set; }
 
 
         [Display(Name = "Warranty")]
         public int WarrantyId { get; set; }
         public Warranty? Warranty { get; set; }
 
-
+        public string? UserId { get; set; }
+        public ApplicationUser? User { get; set; }
         public ICollection<OrderDetail>? OrderDetails { get; set; }
         public ICollection<WishList>? WishLists { get; set; }
+
+
+        [NotMapped]
+        public List<IFormFile>? ImageFile { get; set; }
+
+        public virtual ICollection<ProductImage>? Images { get; set; }
 
 
     }

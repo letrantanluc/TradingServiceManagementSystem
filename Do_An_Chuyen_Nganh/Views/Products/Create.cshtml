@@ -4,7 +4,124 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link href="~/layoutuser/clients/css/dangtin.css" rel="stylesheet" />
 
+
+
+
+<section class="container">
+    <div class="card">
+        <h2>Đăng tin mới</h2>
+        <div class="card__body ">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <section>
+                    <b>Thông tin bắt buộc</b>
+                    <div class="form-control form-control-category_id">
+                        <select asp-for="CategoryId" class="select mselect isDropdown hasValue required" asp-items="ViewBag.CategoryId"></select>
+                        <label for="category_id">Danh mục</label>
+                    </div>
+                    <div class="d-flex-wrap grid-2 gap-10">                       
+                        <div class="form-control form-control-name ">
+                            <input class="minput" asp-for="Title" placeholder="Tiêu đề">
+                        </div>
+                        <div class="form-control form-control-price ">
+                            <input class="minput" asp-for="Price" placeholder="Giá">
+                        </div>
+                    </div>
+                    <div class=" form-textarea form-control form-control-content">
+                        <div class="focus-capture"></div>
+                        <textarea class="required sodjbf4" asp-for="Description"></textarea>
+                        <label for="field-content">Mô tả chi tiết</label>
+                    </div>
+                    <div class="d-flex-wrap grid-2 gap-10">
+                        <div class="form-control form-control-name ">
+                            <input class="minput" asp-for="Quantity" placeholder="Số lượng sản phẩm">
+                        </div>
+                    </div>
+                    <div>
+                        <b>Hình ảnh và Video sản phẩm</b>
+                        <div class="upload-files">
+                            <input type="file" asp-for="ImageFile" accept="image/*" multiple id="image-upload" />
+                        </div>
+                    </div>
+
+                </section>             
+                <section>
+                    <b>Địa chỉ</b>
+                    <div class="form-control form-control-address ">
+                        <input class="minput" asp-for="Address" placeholder="Địa chỉ chi tiết (Tên đường, Số nhà...)">
+                    </div>
+                </section>
+                <section>
+                    <b>Thông tin thêm <small>(càng chi tiết càng dễ bán hơn)</small></b>
+                    <div class="d-flex-wrap grid-2 gap-10">
+                        <div class="form-control ">
+                            <select asp-for="ConditionId" class="select mselect isDropdown hasValue required" asp-items="ViewBag.ConditionId"></select>
+                            <label for="">Tình trạng</label>
+                        </div>
+                        <div class="form-control ">
+                            <select asp-for="ColorId" class="select mselect isDropdown hasValue required" asp-items="ViewBag.ColorId"></select>
+                            <label for="attr[color]">Màu sắc</label>
+                        </div>
+                        <div class="form-control ">
+                            <select asp-for="WarrantyId" class="select mselect isDropdown hasValue required" asp-items="ViewBag.WarrantyId"></select>
+                            <label for="attr[guarantee]">Bảo hành</label>
+
+                        </div>
+                        <div class="form-control form-control-attr[made_in]  ">
+                            <select asp-for="ProvenienceId" class="select mselect isDropdown hasValue required" asp-items="ViewBag.ProvenienceId"></select>
+                            <label for="attr[made_in]">Xuất xứ</label>
+                        </div>
+                    </div>
+                </section>
+                <div class="d-flex justify-content-center gap-10">
+                    <a class="btn btn-back" href="/Home/Index">
+                        Về danh sách
+                    </a>
+                    <button type="submit" value="Create" class="btn-primary btn-submit">
+                        ĐĂNG TIN
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+@*
+<script>
+    function updateAddressInput(inputElement) {
+        var wardText = $("#ward option:selected").text();
+        var districtText = $("#district option:selected").text();
+        var provinceText = $("#province option:selected").text();
+
+        // Lưu giữ giá trị của result
+        var result = "";
+        if (districtText != "" && provinceText != "" && wardText != "") {
+            result = wardText + ", " + districtText + ", " + provinceText;
+        }
+
+        var modelAddress = inputElement.value;
+
+        // Hiển thị giá trị của modelAddress vào #modelAddress
+        //$(".sonha #modelAddress").text(modelAddress);
+
+        // Hiển thị giá trị của result
+        //$(".diachitrave #result").text(result);
+
+        // Cập nhật giá trị của hidden input
+        $('input[name="Address"]').val(modelAddress + ", " + result);
+    }
+</script>*@
+
+
+
+@*
 <h1>Create</h1>
 
 <h4>Product</h4>
@@ -33,6 +150,12 @@
                 <input asp-for="image" class="form-control" />
                 <span asp-validation-for="image" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
                 <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
@@ -64,3 +187,4 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+*@
