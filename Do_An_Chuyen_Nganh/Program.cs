@@ -1,5 +1,6 @@
 using Do_An_Chuyen_Nganh.Data;
 using Do_An_Chuyen_Nganh.Service.Payment;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 

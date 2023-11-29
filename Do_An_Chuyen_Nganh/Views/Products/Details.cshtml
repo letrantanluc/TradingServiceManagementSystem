@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__pic">
-                    <div class="product__details__pic__item">
+                    @*<div class="product__details__pic__item">
                         <img class="product__details__pic__item--large"
                              src="~/LayoutUser/clients/img/product/details/product-details-1.jpg" alt="">
                     </div>
@@ -24,7 +24,26 @@
                              src="~/LayoutUser/clients/img/product/details/thumb-3.jpg" alt="">
                         <img data-imgbigurl="~/LayoutUser/clients/img/product/details/product-details-4.jpg"
                              src="~/LayoutUser/clients/img/product/details/thumb-4.jpg" alt="">
-                    </div>
+                    </div>*@
+                    
+
+                    @if (Model.Images.Any())
+                    {
+                        <div class="product__details__pic__item">
+                            <img class="product__details__pic__item--large"
+                             src="@Url.Content("~/images/" + Model.Images.First().ImagePath)"
+                             alt="Product Image">
+                        </div>
+                        <div class="product__details__pic__slider owl-carousel">
+                            @foreach (var image in Model.Images)
+                            {
+                                <img data-imgbigurl="@Url.Content("~/images/" + image.ImagePath)"
+                             src="@Url.Content("~/images/" + image.ImagePath)"
+                             alt="Product Thumbnail">
+                            }
+                        </div>
+                    }
+
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">

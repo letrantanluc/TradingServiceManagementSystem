@@ -40,6 +40,7 @@ namespace Do_An_Chuyen_Nganh.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<WishList> WishList { get; set; }
 
+        public DbSet<ProductImage> ProductImages { get; set; }
 
 
 
