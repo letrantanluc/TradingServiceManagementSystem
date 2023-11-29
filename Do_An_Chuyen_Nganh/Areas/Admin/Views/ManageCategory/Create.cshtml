@@ -31,10 +31,11 @@
         </form>
     </div>
 </div>
-
-<form method="get" asp-controller="ManageCategory" asp-action="Index">
-    <button type="submit">Trở về Danh Sách</button>
-</form>
+<div class="d-flex">
+    <a class="btn btn-back" href="/Admin/ManageCategory/Index">
+        Về danh sách
+    </a>
+</div>
 
 <script type="text/javascript">
     function removeDiacritics(str) {

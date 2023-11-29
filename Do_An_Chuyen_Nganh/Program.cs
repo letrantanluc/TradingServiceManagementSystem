@@ -14,7 +14,7 @@ modelbuilder.Services.AddDbContext<ApplicationDbContext>(options =>
 modelbuilder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 modelbuilder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    //.AddRoles<IdentityRole>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 modelbuilder.Services.AddControllersWithViews();
