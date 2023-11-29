@@ -1,0 +1,44 @@
+﻿@model Do_An_Chuyen_Nganh.Models.Category
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Category</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(model => model.Id)
+@*            <input type="hidden" asp-for="Id" name="Id" /> *@
+           <div class="form-group">
+                <label asp-for="CategoryName" class="control-label">Tên Danh Mục</label>
+                <input name="CategoryName" class="form-control" value="@Html.DisplayFor(item => item.CategoryName)" />
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Slug" class="control-label">Slug</label>
+                <input name="Slug" class="form-control" value="@Html.DisplayFor(item => item.Slug)" />
+                <span asp-validation-for="Slug" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentId" class="control-label">Danh Mục Cha</label>
+                <input name="ParentId" class="form-control" value="@Html.DisplayFor(item => item.ParentId)" />
+                <span asp-validation-for="ParentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+        <div class="d-flex">
+            <a class="btn btn-back" href="/Admin/ManageCategory/Index">
+                Về danh sách
+            </a>
+        </div>
+    </div>
+</div>
+

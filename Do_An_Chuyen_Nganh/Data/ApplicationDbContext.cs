@@ -20,7 +20,7 @@ namespace Do_An_Chuyen_Nganh.Data
        
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,Role, string>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         
 
@@ -53,6 +53,7 @@ namespace Do_An_Chuyen_Nganh.Data
             modelbuilder.Seed();
         }
         */
+
     }
-    
+
 }
