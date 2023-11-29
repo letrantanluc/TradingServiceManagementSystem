@@ -8,7 +8,6 @@ using System.Text;
 using Do_An_Chuyen_Nganh.Data;
 using Do_An_Chuyen_Nganh.Infrastructure;
 using System.Security.Cryptography;
-using System.Web;
 using System.Net;
 
 namespace Do_An_Chuyen_Nganh.Controllers

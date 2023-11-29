@@ -4,6 +4,7 @@ using Do_An_Chuyen_Nganh.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Do_An_Chuyen_Nganh.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231123161608_delde")]
+    partial class delde
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,16 +114,9 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Color", b =>
@@ -290,6 +285,9 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.Property<int>("WarrantyId")
                         .HasColumnType("int");
 
+                    b.Property<string>("image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -305,28 +303,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.HasIndex("WarrantyId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.ProductImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ImagePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Provenience", b =>
@@ -526,13 +502,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Role", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
-
-                    b.ToTable("Role");
-                });
-
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.OrderDetail", b =>
                 {
                     b.HasOne("Do_An_Chuyen_Nganh.Models.Order", "Order")
@@ -601,17 +570,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.Navigation("Warranty");
                 });
 
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.ProductImage", b =>
-                {
-                    b.HasOne("Do_An_Chuyen_Nganh.Models.Product", "Product")
-                        .WithMany("Images")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.WishList", b =>
                 {
                     b.HasOne("Do_An_Chuyen_Nganh.Models.Product", "Product")
@@ -674,15 +632,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Role", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithOne()
-                        .HasForeignKey("Do_An_Chuyen_Nganh.Models.Role", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -705,8 +654,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
 
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Product", b =>
                 {
-                    b.Navigation("Images");
-
                     b.Navigation("OrderDetails");
 
                     b.Navigation("WishLists");
