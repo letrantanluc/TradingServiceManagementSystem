@@ -20,7 +20,7 @@ namespace Do_An_Chuyen_Nganh.Data
        
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,Role, string>
     {
         
 
@@ -39,7 +39,7 @@ namespace Do_An_Chuyen_Nganh.Data
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<WishList> WishList { get; set; }
-
+        public DbSet<Role> Roles { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
 
 
@@ -54,4 +54,5 @@ namespace Do_An_Chuyen_Nganh.Data
         }
         */
     }
+    
 }
