@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/layoutuser/clients/css/dangtin.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
-
+<script src="~/LayoutAdmin/api_tinh_thanhpho_2.js"></script>
 
 <section class="container">
     <div class="card">
@@ -47,10 +47,42 @@
                     </div>
 
                 </section>             
-                <section>
+                @*<section>
                     <b>Địa chỉ</b>
                     <div class="form-control form-control-address ">
                         <input class="minput" asp-for="Address" placeholder="Địa chỉ chi tiết (Tên đường, Số nhà...)">
+                    </div>
+                </section>*@
+                <section>
+                    <div class="checkout__input">
+                        <p>Address<span>*</span></p>
+                        <div class="address_section" style="display:flex; margin-bottom: 10px">
+                            <form action="">
+                                <select class="nice-select" id="province1" style="margin-right:20px" onchange="updateAddressPreview()">Tỉnh/Thành Phố</select>
+                                <select class="nice-select" id="district1" style="margin-right:20px" onchange="updateAddressPreview()">
+                                    <option value="">Quận/Huyện</option>
+                                </select>
+                                <select class="nice-select" id="ward1" style="margin-right:20px" onchange="updateAddressPreview()">
+                                    <option value="">Phường</option>
+                                </select>
+                            </form>
+                        </div>
+                        <div class="">
+                            <input name="Diachi" asp-for="Address" type="text" placeholder="nhập địa chỉ chi tiết" oninput="updateAddressInput(this)">
+                        </div>
+                        <div class="address-info">
+                            <div class="address-final">
+                                <div class="sonha">
+                                    <span id="modelAddress"></span>
+                                </div>
+                                <div class="diachitrave">
+@*                                    <span id="result"></span>
+*@                                </div>
+                            </div>
+                        </div>
+@*                        <h5 id="addressPreview"></h5>
+*@                        <input type="hidden" name="UpdatedAddress" id="UpdatedAddress" asp-for="Address" />
+
                     </div>
                 </section>
                 <section>
@@ -89,102 +121,32 @@
     </div>
 </section>
 
+<style>
+#province1, #district1, #ward1 
+{
+    display: block !important;
+}
 
+</style>
 
-
-
-@*
 <script>
     function updateAddressInput(inputElement) {
-        var wardText = $("#ward option:selected").text();
-        var districtText = $("#district option:selected").text();
-        var provinceText = $("#province option:selected").text();
-
+        var wardText = $("#ward1 option:selected").text();
+        var districtText = $("#district1 option:selected").text();
+        var provinceText = $("#province1 option:selected").text();
+        // Lấy giá trị địa chỉ từ ô input
+        var modelAddress = inputElement.value;
         // Lưu giữ giá trị của result
         var result = "";
         if (districtText != "" && provinceText != "" && wardText != "") {
             result = wardText + ", " + districtText + ", " + provinceText;
         }
-
-        var modelAddress = inputElement.value;
-
-        // Hiển thị giá trị của modelAddress vào #modelAddress
-        //$(".sonha #modelAddress").text(modelAddress);
-
-        // Hiển thị giá trị của result
-        //$(".diachitrave #result").text(result);
-
         // Cập nhật giá trị của hidden input
-        $('input[name="Address"]').val(modelAddress + ", " + result);
+        $('input[name="UpdatedAddress"]').val(modelAddress + ", " + result);
+        // Hiển thị giá trị của result trong h5
+        $("#addressPreview").text(modelAddress + ", " + result);
+        console.log(UpdatedAddress)
+
     }
-</script>*@
+</script>
 
-
-
-@*
-<h1>Create</h1>
-
-<h4>Product</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="image" class="control-label"></label>
-                <input asp-for="image" class="form-control" />
-                <span asp-validation-for="image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ColorId" class="control-label"></label>
-                <select asp-for="ColorId" class ="form-control" asp-items="ViewBag.ColorId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConditionId" class="control-label"></label>
-                <select asp-for="ConditionId" class ="form-control" asp-items="ViewBag.ConditionId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProvenienceId" class="control-label"></label>
-                <select asp-for="ProvenienceId" class ="form-control" asp-items="ViewBag.ProvenienceId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="WarrantyId" class="control-label"></label>
-                <select asp-for="WarrantyId" class ="form-control" asp-items="ViewBag.WarrantyId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-*@

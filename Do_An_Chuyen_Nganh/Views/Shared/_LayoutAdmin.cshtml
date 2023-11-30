@@ -190,18 +190,24 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="~/index.html">
+                        <a class="nav-link" href="/">
                             <span class="menu-title">Trang Chủ</span>
                             <i class="mdi mdi-home menu-icon"></i>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                        <a class="nav-link" href="/admin/Dashboard">
+                            <span class="menu-title">Thống kê</span>
+                            <i class="mdi mdi-chart-line menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic1" aria-expanded="false" aria-controls="ui-basic1">
                             <span class="menu-title">Quản Lí Role</span>
                             <i class="menu-arrow"></i>
                             <i class="mdi mdi-crosshairs-gps menu-icon"></i>
                         </a>
-                        <div class="collapse" id="ui-basic">
+                        <div class="collapse" id="ui-basic1">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
                                     <a class="nav-link" href="/admin/ManageRole/Index">Danh sách Role</a>
@@ -219,14 +225,15 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/ManageCategory/Index">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic2">
                             <span class="menu-title">Quản Lí Danh Mục</span>
-                            <i class="mdi mdi-contacts menu-icon"></i>
+                            <i class="menu-arrow"></i>
+                            <i class="mdi mdi-shape-outline menu-icon"></i>
                         </a>
-                        <div class="collapse" id="ui-basic">
+                        <div class="collapse" id="ui-basic2">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/admin/ManageCategory/Index">Danh sách Danh Muc</a>
+                                    <a class="nav-link" href="/admin/ManageCategory/Index">Danh sách Danh Mục</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/admin/ManageCategory/Create">Tạo Danh Mục Mới</a>
@@ -234,6 +241,7 @@
                             </ul>
                         </div>
                     </li>
+                   
                    @* <li class="nav-item">
                         <a class="nav-link" href="~/pages/forms/basic_elements.html">
                             <span class="menu-title">Forms</span>
