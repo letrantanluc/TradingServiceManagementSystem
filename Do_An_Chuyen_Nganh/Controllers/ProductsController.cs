@@ -42,6 +42,7 @@ namespace Do_An_Chuyen_Nganh.Controllers
                                       .Where(img => img.ProductId == p.Id)
                                       .Select(img => img.ImagePath)
                                       .FirstOrDefault()
+
                     })
                     .ToListAsync();
 

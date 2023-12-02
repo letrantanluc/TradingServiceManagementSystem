@@ -72,7 +72,13 @@
                     </div>
                     <div class="primary-btn add-to-cart" data-product-id="@Model.Id"><a href="#">ADD TO CARD</a></div>
                     @*<a href="#" class="primary-btn">ADD TO CARD</a>*@
-                    <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                  
+                   @* <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>*@
+
+                    <a href="#" class="heart-icon" onclick="addToWishList(@Model.Id)">
+                        <span class="icon_heart_alt"></span>
+                    </a>
+                   
                     <ul>
                         <li><b>Availability</b> <span>In Stock</span></li>
                         <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
@@ -278,6 +284,28 @@
             });
         });
     });
+
+
+    function addToWishList(productId) {
+        $.ajax({
+            type: 'POST',
+            url: '/WishList/AddToWishList',
+            data: { productId: productId },
+            success: function (data) {
+                if (data.success) {
+                    // Xử lý thành công
+                    alert(data.message);
+                } else {
+                    // Xử lý lỗi hoặc thông báo
+                    alert(data.message);
+                }
+            }
+        });
+    }
+
+
+
+
 </script>
 <style>
     .product__details__pic__slider img {
@@ -291,6 +319,7 @@
         height: auto; /* Chiều cao tự động, giữ nguyên tỷ lệ khía cạnh */
         object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
     }
+
 
    
 </style>

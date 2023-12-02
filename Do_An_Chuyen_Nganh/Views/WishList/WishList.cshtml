@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Do_An_Chuyen_Nganh.Models.WishList>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="row">
+                    @foreach (var wishListItem in Model)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="@Url.Content("~/images/" + wishListItem.Product.Images.FirstOrDefault()?.ImagePath)">
+                                    <ul class="product__item__pic__hover">
+                                        <li><a href="@Url.Action("Details", "Products", new { id = wishListItem.Product.Id })"><i class="fa fa-eye"></i></a></li>                                      
+                                        <li><a href="#" class="btnDelete" data-id="@wishListItem.Product.Id"><i class="fa fa-trash"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a asp-controller="Products" asp-action="Details" asp-route-Id="@wishListItem.Product.Id">@wishListItem.Product.Title</a></h6>
+                                    <h5>@wishListItem.Product.Price.ToString("N0")đ</h5>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+
+
+    $(document).ready(function () {
+        var selectedProductId;
+
+        $(document).on('click', '.btnDelete', function () {
+            selectedProductId = $(this).data('id');
+
+            // Sử dụng hàm confirm của trình duyệt
+            var userConfirmed = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm khỏi danh sách yêu thích không?");
+
+            if (userConfirmed) {
+                deleteProductFromWishList(selectedProductId);
+            }
+        });
+
+        // Hàm gọi action xóa sản phẩm từ danh sách yêu thích
+        function deleteProductFromWishList(productId) {
+            $.ajax({
+                type: 'POST',
+                url: '/WishList/RemoveFromWishList',
+                data: { productId: productId },
+                success: function (data) {
+                    if (data.success) {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+    });
+
+
+</script>
+
+
+
+
+
+
+
+
