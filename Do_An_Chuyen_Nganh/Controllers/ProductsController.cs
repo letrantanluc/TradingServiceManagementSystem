@@ -150,15 +150,15 @@ namespace Do_An_Chuyen_Nganh.Controllers
         public IActionResult UserPosts()
         {
 
-            // Lấy UserId của người đăng nhập hiện tại
-            var userId = _userManager.GetUserId(User);
+                // Lấy UserId của người đăng nhập hiện tại
+                var userId = _userManager.GetUserId(User);
 
-            // Lấy các bài đăng của người dùng dựa trên UserId
-            var userPosts = _context.Products.Where(p => p.UserId == userId).Include(p => p.Images).ToList();
+                // Lấy các bài đăng của người dùng dựa trên UserId
+                var userPosts = _context.Products.Where(p => p.UserId == userId).Include(p => p.Images).ToList();
 
-            // Truyền danh sách bài đăng của người dùng đến view
-            return View(userPosts);
-        }
+                // Truyền danh sách bài đăng của người dùng đến view
+                return View(userPosts);
+            }
         //--------------------------------------------------------------------------------------------------
         // --------------------------------------------- Đăng tin ---------------------------------------------------
 
@@ -387,7 +387,11 @@ namespace Do_An_Chuyen_Nganh.Controllers
             {
                 return NotFound();
             }
+            // Lấy thông tin về người dùng từ UserManager
+            var user = await _userManager.FindByIdAsync(product.UserId);
 
+            // Đặt tên người dùng vào model
+            product.UserName = user.UserName;
             return View(product);
         }
         //--------------------------------------------------------------------------------------------------
