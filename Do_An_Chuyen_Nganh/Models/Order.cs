@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Do_An_Chuyen_Nganh.Models.Enums;
+using Do_An_Chuyen_Nganh.Data;
 
 namespace Do_An_Chuyen_Nganh.Models
 {
@@ -31,5 +33,10 @@ namespace Do_An_Chuyen_Nganh.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
         public ICollection<OrderDetail>? OrderDetails { get; set; }
+
+       
+
+        public string? UserId { get; set; }
+        public ApplicationUser? User { get; set; }
     }
 }
