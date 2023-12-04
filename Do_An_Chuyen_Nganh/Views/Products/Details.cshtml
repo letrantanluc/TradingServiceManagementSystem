@@ -115,6 +115,7 @@
                     <div class="chat-window" id="chatWindow">
                         <div class="chat-header">
                             <h5>@Model.UserName</h5>
+                            <input id="userInput" value="@User.Identity.Name" type="hidden" />
                             <button class="close-chat" onclick="toggleChat()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
@@ -123,10 +124,11 @@
                         </div>
                         <div class="chat-body">
                             <!-- Chat messages can go here -->
+                            <ul id="messagesList"></ul>
                         </div>
                         <div class="chat-input">
                             <input type="text" id="messageInput" placeholder="Nhập tin nhắn...">
-                            <button onclick="sendMessage()">Send</button>
+                            <button id="sendButton">Send</button>
                         </div>
                     </div>
                    
@@ -362,19 +364,6 @@
         // Ví dụ: Gọi hàm kết nối SignalR với userId.
     }
 
-    function sendMessage() {
-        var messageInput = document.getElementById('messageInput');
-        var message = messageInput.value.trim();
-
-        if (message !== '') {
-            // Gửi tin nhắn sử dụng SignalR
-            sendPrivateMessage('hoainam', message);
-
-            // Xóa nội dung của input sau khi gửi
-            messageInput.value = '';
-        }
-    }
-
 </script>
 <style>
     .product__details__pic__slider img {
@@ -523,7 +512,7 @@
 </style>
 
 @section scripts{
-    <script src="~/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/lib/jquery/dist/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/js/chat.js"></script>
 }

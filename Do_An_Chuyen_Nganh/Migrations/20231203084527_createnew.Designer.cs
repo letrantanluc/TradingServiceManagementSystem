@@ -4,6 +4,7 @@ using Do_An_Chuyen_Nganh.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Do_An_Chuyen_Nganh.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231203084527_createnew")]
+    partial class createnew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,36 +161,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.ToTable("Conditions");
                 });
 
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("When")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Messages");
-                });
-
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -315,10 +287,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("WarrantyId")
                         .HasColumnType("int");
@@ -566,17 +534,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Message", b =>
-                {
-                    b.HasOne("Do_An_Chuyen_Nganh.Data.ApplicationUser", "Sender")
-                        .WithMany("Messages")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.OrderDetail", b =>
                 {
                     b.HasOne("Do_An_Chuyen_Nganh.Models.Order", "Order")
@@ -725,11 +682,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasForeignKey("Do_An_Chuyen_Nganh.Models.Role", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Data.ApplicationUser", b =>
-                {
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Category", b =>
