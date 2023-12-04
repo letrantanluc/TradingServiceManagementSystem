@@ -4,6 +4,7 @@ using Do_An_Chuyen_Nganh.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Do_An_Chuyen_Nganh.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231204044805_updateMessage")]
+    partial class updateMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,12 +238,7 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -267,9 +264,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Total")
@@ -577,14 +571,11 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.ToTable("Role");
                 });
 
-
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Order", b =>
+            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Message", b =>
                 {
-                    b.HasOne("Do_An_Chuyen_Nganh.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
+                    b.HasOne("Do_An_Chuyen_Nganh.Data.ApplicationUser", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.OrderDetail", b =>
