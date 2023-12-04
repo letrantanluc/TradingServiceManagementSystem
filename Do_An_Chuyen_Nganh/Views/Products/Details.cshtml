@@ -115,8 +115,8 @@
                     <div class="chat-window" id="chatWindow">
                         <div class="chat-header">
                             <h5>@Model.UserName</h5>
-                            <input id="userInput" value="@User.Identity.Name" type="hidden" />
-                            <button class="close-chat" onclick="toggleChat()">
+                            <input id="userInput" value="@Model.UserId" type="hidden" />
+                            <button class="btn btn-success" style="width: 100%;" onclick="toggleChat('@Model.UserId', '@User.Identity.Name')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
                                 </svg>
@@ -356,12 +356,17 @@
         });
     }
 
-    function toggleChat(userId) {
+    function toggleChat(receiverId, senderId) {
         var chatWindow = document.getElementById('chatWindow');
         chatWindow.classList.toggle('open');
 
-        // Tại đây, bạn có thể thực hiện các bước để kết nối cửa sổ chat với người dùng có userId cụ thể.
-        // Ví dụ: Gọi hàm kết nối SignalR với userId.
+        if (chatWindow.classList.contains('open')) {
+            // Connect to SignalR with receiver ID
+            connection.invoke("AddToGroup", receiverId);
+        } else {
+            // Disconnect or perform any cleanup
+            connection.invoke("RemoveFromGroup", receiverId);
+        }
     }
 
 </script>
