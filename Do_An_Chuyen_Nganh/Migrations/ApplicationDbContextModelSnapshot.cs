@@ -167,9 +167,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ReceiverID")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -186,8 +183,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Messages");
                 });
@@ -569,13 +564,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Message", b =>
-                {
-                    b.HasOne("Do_An_Chuyen_Nganh.Data.ApplicationUser", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.OrderDetail", b =>
                 {
                     b.HasOne("Do_An_Chuyen_Nganh.Models.Order", "Order")
@@ -724,11 +712,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasForeignKey("Do_An_Chuyen_Nganh.Models.Role", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Data.ApplicationUser", b =>
-                {
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Category", b =>
