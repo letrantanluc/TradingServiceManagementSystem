@@ -100,7 +100,8 @@ namespace Do_An_Chuyen_Nganh.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        //return LocalRedirect(returnUrl);
+                        return RedirectToPage("Identity/Account/Login", new { returnUrl = returnUrl });
                     }
                 }
                 foreach (var error in result.Errors)
