@@ -1,5 +1,4 @@
-﻿using Do_An_Chuyen_Nganh.Models.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Do_An_Chuyen_Nganh.Models
@@ -22,7 +21,5 @@ namespace Do_An_Chuyen_Nganh.Models
 
         public Order? Order { get; set; }
         public Product? Product { get; set; }
-        public OrderStatus Status { get; set; } = OrderStatus.ĐangXửLý;
-
     }
 }
