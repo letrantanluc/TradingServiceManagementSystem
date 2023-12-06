@@ -78,7 +78,20 @@ namespace Do_An_Chuyen_Nganh.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    //return LocalRedirect(returnUrl);
+                    var user = await _userManager.FindByNameAsync(Input.UserName);
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    if (roles.Contains("Admin"))
+                    {
+                        // Nếu người dùng là Admin, chuyển hướng đến trang Admin
+                        return LocalRedirect("~/Admin"); // Điều chỉnh đường dẫn Admin tùy thuộc vào cấu hình ứng dụng của bạn
+                    }
+                    else
+                    {
+                        // Nếu người dùng là User, chuyển hướng đến trang User
+                        return LocalRedirect("~/Home"); // Điều chỉnh đường dẫn User tùy thuộc vào cấu hình ứng dụng của bạn
+                    }
                 }
                 if (result.RequiresTwoFactor)
                 {
