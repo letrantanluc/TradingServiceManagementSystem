@@ -58,7 +58,8 @@
                         <i class="fa fa-star-half-o"></i>
                         <span>(18 reviews)</span>
                     </div>
-                    <div class="product__details__price">@Model.Price</div>
+                    <div class="product__details__price">@string.Format("{0:N0}", Model.Price)<span>đ</span></div>
+
                     <p>
                         Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam
                         vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet
@@ -369,6 +370,14 @@
         }
     }
 
+    function formatPrice() {
+        // Định dạng giá cả với dấu phẩy
+        $('.product__details__price').each(function () {
+            var price = $(this).text();
+            var formattedPrice = parseFloat(price.replace(/,/g, '')).toLocaleString('en-US');
+            $(this).text(formattedPrice);
+        });
+    }
 </script>
 <style>
     .product__details__pic__slider img {
