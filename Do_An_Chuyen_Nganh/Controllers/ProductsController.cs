@@ -179,7 +179,9 @@ namespace Do_An_Chuyen_Nganh.Controllers
             if (ModelState.IsValid)
             {
                 var userId = _userManager.GetUserId(User);
+                var user = _context.Users.Where(x => x.Id == userId).FirstOrDefault();
                 product.UserId = userId;
+                product.UserName = user.UserName;
 
                 // Thêm sản phẩm trước khi không có hình ảnh
                 _context.Add(product);
