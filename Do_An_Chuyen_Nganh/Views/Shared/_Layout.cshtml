@@ -44,12 +44,12 @@
                             </div>
                             <div class="col-lg-6 col-md-6">
                                 <div class="row header__top__right">
-                                    <div class="col-lg-6 col-md-6">
+                                    <div class="col-lg-6 col-md-6" style="line-height:40px">
                                         <div class="header__top__right__language">
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
-                                        <div class="header__top__right__auth d-flex align-items-center"  style="line-height:40px">
+                                        <div class="header__top__right__auth d-flex align-items-center">
                                             @Html.Partial("_LoginPartial")
                                         </div>
                                     </div>
@@ -65,29 +65,27 @@
                                 <a href="./index.html"><img src="~/LayoutUser/clients/img/logo.png" alt=""></a>
                             </div>
                         </div>
-                        <div class="col-lg-6 text-center">
+                        <div class="col-lg-6">
                             <nav class="header__menu">
-                                 <ul>
-                                     <li class="active"><a href="/Home/Index">Trang Chủ</a></li>
-                                     <li class="dropdown">
-                                        <a href="/Products/UserPosts">Quản Lí Tin</a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="/Order/ManagePost">Đơn Bán</a></li>
-                                            <li><a href="/Order/OrderedPost">Đơn Mua</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><button class="create-post-button" onclick="location.href='/Products/Create'">Đăng Tin</button></li>
-                                 </ul>
-                             </nav>
+                                <ul>
+
+                                    <li class="active"><a href="/Home/Index">Trang Chủ</a></li>
+                                    <li><a href="/Products/UserPosts">Quản Lí Tin</a></li>
+                                    <li><a href="/Products/Create">Đăng Tin</a></li>
+                                    <li><a href="/WishList/WishList">Yêu Thích</a></li>
+                                    <li><a href="/Admin">Trang Admin</a></li>
+                                    <li><a href="/Order/ManagePost">Quản lí tin</a></li>
+                                    <li><a href="/Order/OrderedPost">Đơn tin</a></li>
+                                </ul>
+                            </nav>
                         </div>
                         <div class="col-lg-3">
                             <div class="header__cart">
                                 <ul>
-                                    <li> <a href="#"><i class="fa fa-bell"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                    <li><a href="@Url.Action("Index","Cart")"><i class="fa fa-shopping-bag"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                                    <li><a href="@Url.Action("Index","Cart")"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                                 </ul>
-                             
+                                <div class="header__cart__price">item: <span>$150.00</span></div>
                             </div>
                         </div>
                     </div>
@@ -119,7 +117,7 @@
      @RenderBody()
     
     <footer>
-        <div class="footer spad" style="margin-top: 20px">
+        <div class="footer spad">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 col-md-6 col-sm-6">
@@ -128,38 +126,40 @@
                                 <a href="./index.html"><img src="~/LayoutUser/clients/img/logo.png" alt=""></a>
                             </div>
                             <ul>
-                                <li>Địa chỉ: 475A Điện Biên Phủ</li>
-                                <li>Điện Thoại: 032.6565.400</li>
-                                <li>Email: vinhoainam0815@gmail.com</li>
+                                <li>Address: 60-49 Road 11378 New York</li>
+                                <li>Phone: +65 11.188.888</li>
+                                <li>Email: hello@colorlib.com</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
                         <div class="footer__widget">
-                            <h6>Hỗ trợ</h6>
+                            <h6>Useful Links</h6>
                             <ul>
-                                <li><a href="#">Về Chúng TÔi</a></li>
-                                <li><a href="#">Chính Sách</a></li>
-                                <li><a href="#">Liên Hệ</a></li>
-                                <li><a href="#">Nguồn Gốc</a></li>
-                                <li><a href="#">Thẻ</a></li>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">About Our Shop</a></li>
+                                <li><a href="#">Secure Shopping</a></li>
+                                <li><a href="#">Delivery infomation</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Our Sitemap</a></li>
                             </ul>
                             <ul>
-                                <li><a href="#">Khuyến Mãi</a></li>
-                                <li><a href="#">Ưu Đãi</a></li>
-                                <li><a href="#">Dự Án</a></li>
-                                <li><a href="#">Dịch Vụ</a></li>
-                                <li><a href="#">Nghề Nghiệp</a></li>
+                                <li><a href="#">Who We Are</a></li>
+                                <li><a href="#">Our Services</a></li>
+                                <li><a href="#">Projects</a></li>
+                                <li><a href="#">Contact</a></li>
+                                <li><a href="#">Innovation</a></li>
+                                <li><a href="#">Testimonials</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12">
                         <div class="footer__widget">
-                            <h6>Tham gia bản tin của chúng tôi ngay bây giờ</h6>
-                            <p>Nhận thông tin cập nhật qua Email về cửa hàng mới nhất của chúng tôi và các ưu đãi đặc biệt.</p>
+                            <h6>Join Our Newsletter Now</h6>
+                            <p>Get E-mail updates about our latest shop and special offers.</p>
                             <form action="#">
-                                <input type="text" placeholder="Nhập email của bạn">
-                                <button type="submit" class="site-btn">Đăng Ký</button>
+                                <input type="text" placeholder="Enter your mail">
+                                <button type="submit" class="site-btn">Subscribe</button>
                             </form>
                             <div class="footer__widget__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
@@ -203,40 +203,3 @@
 </body>
 
 </html>
-<style>
-  /* Style for the dropdown menu */
-  .header__menu .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background-color: #555;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      z-index: 1;
-  }
-
-  .header__menu .dropdown:hover .dropdown-menu {
-      display: block;
-  }
-
-  /* Style for dropdown items */
-  .header__menu .dropdown-menu a {
-      display: block;
-      color: white;
-      padding: 10px;
-      text-decoration: none;
-  }
-   /* Style for the "Đăng Tin" button */
- .header__menu .create-post-button {
-     background: #f80;
-     color: #fff;
-     border: none;
-     cursor: pointer;
-     font-weight: 400;
-     text-decoration: none;
-     padding: 8px 20px;
-     text-transform: uppercase;
-     font-weight: bold;
-     border-radius: 5px;
- }
-</style>
