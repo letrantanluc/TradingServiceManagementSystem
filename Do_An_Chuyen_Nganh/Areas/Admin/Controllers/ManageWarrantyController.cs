@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/ManageProvenience")]
-    public class ManageProvenienceController : BaseController<Provenience>
+    [Route("Admin/ManageWarranty")]
+    public class ManageWarrantyController : BaseController<Warranty>
     {
         private readonly ApplicationDbContext _context;
 
-        public ManageProvenienceController(ApplicationDbContext context) : base(context)
+        public ManageWarrantyController(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
@@ -19,8 +19,8 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
         [HttpGet("Index")] // Chỉ rõ là phương thức GET
         public async Task<ActionResult> Index()
         {
-            var proveniences = GetAll().ToList();
-            return View(proveniences);
+            var warranties = GetAll().ToList();
+            return View(warranties);
         }
 
         [HttpGet("Create")]
@@ -29,19 +29,19 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
             return View();
         }
         [HttpPost("Create")]
-        public async Task<ActionResult> Create(IFormCollection formCollection, Provenience provenience)
+        public async Task<ActionResult> Create(IFormCollection formCollection, Warranty warranty)
         {
             List<string> errors = new List<string>();
             try
             {
-                var name = formCollection["ProvenienceName"].ToString();
+                var name = formCollection["WarrantyName"].ToString();
                 if (string.IsNullOrEmpty(name))
                 {
-                    errors.Add("Chưa nhập tên nguồn gốc");
+                    errors.Add("Chưa nhập tên bảo hành");
                 }
                 if (errors.Count == 0)
                 {
-                    Add(provenience);
+                    Add(warranty);
                 }
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
             }
             TempData["Errors"] = errors;
 
-            return RedirectToAction("Index", "ManageProvenience");
+            return RedirectToAction("Index", "ManageWarranty");
         }
 
         [Route("Edit")]
@@ -59,18 +59,18 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
         {
             if (Id == null)
             {
-                return RedirectToAction("Index", "ManageProvenience");
+                return RedirectToAction("Index", "ManageWarranty");
             }
 
             var checkId = GetById(Id.Value);
 
             if (checkId == null)
             {
-                return RedirectToAction("Index", "ManageProvenience");
+                return RedirectToAction("Index", "ManageWarranty");
             }
 
-            Provenience provenience = GetById(Id.Value);
-            ViewBag.Proveniences = GetAll().ToList();
+            Warranty warranty = GetById(Id.Value);
+            ViewBag.Warranties = GetAll().ToList();
             return View(checkId);
         }
 
@@ -81,17 +81,17 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
             try
             {
                 var id = formCollection["Id"].ToString();
-                var name = formCollection["ProvenienceName"].ToString();
+                var name = formCollection["WarrantyName"].ToString();
 
                 if (string.IsNullOrEmpty(name))
                 {
-                    errors.Add("Chưa nhập tên nguồn gốc");
+                    errors.Add("Chưa nhập tên bảo hành");
                 }
                 if (errors.Count == 0)
                 {
-                    var provenience = GetById(Int32.Parse(formCollection["Id"]));
-                    provenience.ProvenienceName = name;
-                    Update(provenience);
+                    var warranty = GetById(Int32.Parse(formCollection["Id"]));
+                    warranty.WarrantyName = name;
+                    Update(warranty);
                 }
             }
             catch (Exception ex)
@@ -99,7 +99,7 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
                 errors.Add(ex.Message);
             }
             TempData["Errors"] = errors;
-            return RedirectToAction("Index", "ManageProvenience");
+            return RedirectToAction("Index", "ManageWarranty");
         }
 
         [HttpPost("Delete/{id}")]
@@ -112,24 +112,27 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
 
             try
             {
-                Provenience provenience = GetById(id.Value);
+                Warranty warranty = GetById(id.Value);
 
-                if (provenience == null)
+                if (warranty == null)
                 {
-                    return Json(new { success = false, message = "Nguồn gốc không tồn tại" });
+                    return Json(new { success = false, message = "Bảo hành không tồn tại" });
                 }
 
                 // Assuming that your Remove method works correctly
-                Remove(provenience);
+                Remove(warranty);
 
-                return Json(new { success = true, message = "Xóa nguồn gốc thành công" });
+                return Json(new { success = true, message = "Xóa bảo hành thành công" });
             }
             catch (Exception ex)
             {
                 // Log the exception for debugging purposes
                 Console.WriteLine(ex.Message);
-                return Json(new { success = false, message = "Lỗi khi xóa nguồn gốc" });
+                return Json(new { success = false, message = "Lỗi khi xóa bảo hành" });
             }
         }
+
+
+
     }
 }
