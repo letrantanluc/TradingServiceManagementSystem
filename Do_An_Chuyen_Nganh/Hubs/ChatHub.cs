@@ -16,6 +16,9 @@ namespace Do_An_Chuyen_Nganh.Hubs
         public async Task SendMessage(string receiverId, string message)
         {
             var senderId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var senderUsername = await GetUsernameFromUserId(senderId);
+
+            var receiverUsername = await GetUsernameFromUserId(receiverId);
 
             var chatMessage = new Message
             {
@@ -27,7 +30,7 @@ namespace Do_An_Chuyen_Nganh.Hubs
             _context.Messages.Add(chatMessage);
             await _context.SaveChangesAsync();
 
-            await Clients.User(receiverId).SendAsync("ReceiveMessage", senderId, message);
+            await Clients.Groups(receiverId).SendAsync("ReceiveMessage", senderUsername, message);
         }
         public async Task AddToGroup(string groupName)
         {
@@ -37,6 +40,12 @@ namespace Do_An_Chuyen_Nganh.Hubs
         public async Task RemoveFromGroup(string groupName)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+        }
+
+        private async Task<string> GetUsernameFromUserId(string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            return user != null ? user.UserName : "Unknown User";
         }
     }
 }

@@ -16,24 +16,15 @@ namespace Do_An_Chuyen_Nganh.Data
         public string? Address { get; set; }
         public string? Introduction { get; set; }
         public DateTime BOD { get; set; } = DateTime.Now;
-
-        public ApplicationUser()
-        {
-            Messages = new HashSet<Message>();
-        }
-        public virtual ICollection<Message> Messages { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
-        
-
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-      
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Color> Colors { get; set; }
