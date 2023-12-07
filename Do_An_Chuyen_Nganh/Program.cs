@@ -1,10 +1,13 @@
 using Do_An_Chuyen_Nganh.Data;
+using Do_An_Chuyen_Nganh.Hubs;
+using Do_An_Chuyen_Nganh.Service;
 using Do_An_Chuyen_Nganh.Service.Payment;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
+
 
 var modelbuilder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,7 @@ modelbuilder.Services.AddDefaultIdentity<ApplicationUser>(options => options.Sig
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 modelbuilder.Services.AddControllersWithViews();
+modelbuilder.Services.AddSignalR();
 
 //momo
 var momoSettings = modelbuilder.Configuration.GetSection("MomoSettings").Get<MomoSettings>();
@@ -54,6 +58,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.MapControllerRoute(
     name: "default",

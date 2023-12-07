@@ -17,7 +17,11 @@ namespace Do_An_Chuyen_Nganh.Data
         public string? Introduction { get; set; }
         public DateTime BOD { get; set; } = DateTime.Now;
 
-       
+        public ApplicationUser()
+        {
+            Messages = new HashSet<Message>();
+        }
+        public virtual ICollection<Message> Messages { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
@@ -41,19 +45,12 @@ namespace Do_An_Chuyen_Nganh.Data
         public DbSet<WishList> WishList { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
 
-
-        /*
-        protected override void OnModelCreating(ModelBuilder modelbuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-
-            modelbuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
-
-            modelbuilder.Seed();
+            base.OnModelCreating(builder);
         }
-        */
-
     }
-
 }
