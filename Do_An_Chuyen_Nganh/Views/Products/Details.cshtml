@@ -12,22 +12,6 @@
         <div class="row">
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__pic">
-                    @*<div class="product__details__pic__item">
-                        <img class="product__details__pic__item--large"
-                             src="~/LayoutUser/clients/img/product/details/product-details-1.jpg" alt="">
-                    </div>
-                    <div class="product__details__pic__slider owl-carousel">
-                        <img data-imgbigurl="~/LayoutUser/clients/img/product/details/product-details-2.jpg"
-                             src="~/LayoutUser/clients/img/product/details/thumb-1.jpg" alt="">
-                        <img data-imgbigurl="~/LayoutUser/clients/img/product/details/product-details-3.jpg"
-                             src="~/LayoutUser/clients/img/product/details/thumb-2.jpg" alt="">
-                        <img data-imgbigurl="~/LayoutUser/clients/img/product/details/product-details-5.jpg"
-                             src="~/LayoutUser/clients/img/product/details/thumb-3.jpg" alt="">
-                        <img data-imgbigurl="~/LayoutUser/clients/img/product/details/product-details-4.jpg"
-                             src="~/LayoutUser/clients/img/product/details/thumb-4.jpg" alt="">
-                    </div>*@
-                    
-
                     @if (Model.Images.Any())
                     {
                         <div class="product__details__pic__item">
@@ -71,6 +55,8 @@
                             </div>
                         </div>
                     </div>
+
+
                     <div class="primary-btn add-to-cart" data-product-id="@Model.Id"><a href="#">ADD TO CARD</a></div>
                     @*<a href="#" class="primary-btn">ADD TO CARD</a>*@
                   
@@ -356,6 +342,7 @@
         });
     }
 
+
     function toggleChat(receiverId, senderId) {
         var chatWindow = document.getElementById('chatWindow');
         chatWindow.classList.toggle('open');
@@ -368,6 +355,7 @@
             connection.invoke("RemoveFromGroup", receiverId);
         }
     }
+
 
 </script>
 <style>
