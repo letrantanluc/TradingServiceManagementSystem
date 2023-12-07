@@ -15,6 +15,7 @@
         <div class="card__body ">
             <form asp-action="Create" method="post" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <section>
                     <b>Thông tin bắt buộc</b>
                     <div class="form-control form-control-category_id">
@@ -22,18 +23,26 @@
                         <label for="category_id">Danh mục</label>
                     </div>
                     <div class="d-flex-wrap grid-2 gap-10">
-                        <div class="form-control form-control-name ">
-                            <input class="minput" asp-for="Title" placeholder="Tiêu đề">
-                        </div>
-                        <div class="form-control form-control-price ">
-                            <input class="minput" asp-for="Price" placeholder="Giá">
-                        </div>
+                       <div>
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                            <div class="form-control form-control-name ">
+                                <input class="minput" asp-for="Title" placeholder="Tiêu đề">
+                            </div>
+                       </div>
+                        <div>
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                            <div class="form-control form-control-price ">
+                                <input class="minput" asp-for="Price" placeholder="Giá">
+                            </div>
+                        </div>          
                     </div>
+                    <span asp-validation-for="Description" class="text-danger"></span>
                     <div class=" form-textarea form-control form-control-content">
                         <div class="focus-capture"></div>
                         <textarea class="required sodjbf4" asp-for="Description"></textarea>
                         <label for="field-content">Mô tả chi tiết</label>
                     </div>
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
                     <div class="d-flex-wrap grid-2 gap-10">
                         <div class="form-control form-control-name ">
                             <input class="minput" asp-for="Quantity" placeholder="Số lượng sản phẩm">
@@ -41,18 +50,14 @@
                     </div>
                     <div>
                         <b>Hình ảnh và Video sản phẩm</b>
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+
                         <div class="upload-files">
                             <input type="file" asp-for="ImageFile" accept="image/*" multiple id="image-upload" />
                         </div>
                     </div>
 
                 </section>
-                @*<section>
-                <b>Địa chỉ</b>
-                <div class="form-control form-control-address ">
-                <input class="minput" asp-for="Address" placeholder="Địa chỉ chi tiết (Tên đường, Số nhà...)">
-                </div>
-                </section>*@
                 <section>
                     <div class="checkout__input">
                         <p>Address<span>*</span></p>

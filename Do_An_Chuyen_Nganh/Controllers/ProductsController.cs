@@ -176,6 +176,11 @@ namespace Do_An_Chuyen_Nganh.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ImageFile,Address,Quantity,CategoryId,ColorId,ConditionId,ProvenienceId,WarrantyId")] Product product)
         {
+            // Kiểm tra điều kiện: ít nhất 1 ảnh phải được chọn
+            if (product.ImageFile == null || product.ImageFile.Count == 0)
+            {
+                ModelState.AddModelError("ImageFile", "Ít nhất 1 ảnh phải được chọn.");
+            }
             if (ModelState.IsValid)
             {
                 var userId = _userManager.GetUserId(User);
@@ -276,7 +281,6 @@ namespace Do_An_Chuyen_Nganh.Controllers
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
