@@ -59,18 +59,36 @@ namespace Do_An_Chuyen_Nganh.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+
+
+
+            [Display(Name = "Full name")]
+            public string FullName { get; set; }
+
+            [Display(Name = "Address")]
+            public string Address { get; set; }
+
+            [Display(Name = "Date of Birth")]
+            [DataType(DataType.Date)]
+            public DateTime BOD { get; set; } 
+
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
+          
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+
+                FullName = user.FullName,
+                Address = user.Address,
+                BOD = user.BOD
             };
         }
 
@@ -99,6 +117,23 @@ namespace Do_An_Chuyen_Nganh.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
+
+
+
+            // Cập nhật thông tin của người dùng từ các thuộc tính của InputModel
+            user.FullName = Input.FullName;
+            user.Address = Input.Address;
+            user.BOD = Input.BOD;
+
+            // Lưu các thay đổi vào cơ sở dữ liệu
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                StatusMessage = "Unexpected error when trying to update the profile.";
+                return RedirectToPage();
+            }
+
+
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)

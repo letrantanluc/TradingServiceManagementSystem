@@ -15,6 +15,7 @@
         <h2>Cập nhật tin</h2>
         <div class="card__body ">
             <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <section>
                     <b>Thông tin bắt buộc</b>
                     <div class="form-control form-control-category_id">
@@ -22,18 +23,26 @@
                         <label for="category_id">Danh mục</label>
                     </div>
                     <div class="d-flex-wrap grid-2 gap-10">
-                        <div class="form-control form-control-name ">
-                            <input class="minput" asp-for="Title" placeholder="Tiêu đề">
+                        <div>
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                            <div class="form-control form-control-name ">
+                                <input class="minput" asp-for="Title" placeholder="Tiêu đề">
+                            </div>
                         </div>
-                        <div class="form-control form-control-price ">
-                            <input class="minput" asp-for="Price" placeholder="Giá">
+                        <div>
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                            <div class="form-control form-control-price ">
+                                <input class="minput" asp-for="Price" placeholder="Giá">
+                            </div>
                         </div>
                     </div>
+                    <span asp-validation-for="Description" class="text-danger"></span>
                     <div class=" form-textarea form-control form-control-content">
                         <div class="focus-capture"></div>
                         <textarea class="required sodjbf4" asp-for="Description"></textarea>
                         <label for="field-content">Mô tả chi tiết</label>
                     </div>
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
                     <div class="d-flex-wrap grid-2 gap-10">
                         <div class="form-control form-control-name ">
                             <input class="minput" asp-for="Quantity" placeholder="Số lượng sản phẩm">

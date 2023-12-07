@@ -18,10 +18,10 @@ namespace Do_An_Chuyen_Nganh.Models
         [StringLength(500, ErrorMessage = "Không vượt quá 500 ký tự")]
         public string? Description { get; set; }
 
-        [Required(ErrorMessage = "Giá  không được để trống")]
+        [Required(ErrorMessage = "Giá không được để trống")]
         public decimal Price { get; set; }
 
-    
+
 
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
@@ -41,7 +41,7 @@ namespace Do_An_Chuyen_Nganh.Models
         public Provenience? Provenience { get; set; }
 
         [Required(ErrorMessage = "Số lượng  không được để trống")]
-
+        [Range(1, int.MaxValue, ErrorMessage = "Số lượng sản phẩm phải lớn hơn 0.")]
         public int Quantity { get; set; }
         [Required(ErrorMessage = "Địa chỉ không được để trống")]
         public string? Address { get; set; }
@@ -64,4 +64,5 @@ namespace Do_An_Chuyen_Nganh.Models
 
 
     }
+
 }

@@ -1,45 +1,49 @@
 ﻿
 @model List<Do_An_Chuyen_Nganh.Models.OrderDetail>
 @using Do_An_Chuyen_Nganh.Models.Enums
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-               STT
-            </th>
-            <th>
-                Code
-            </th>
-            <th>
-                Sản phẩm
-            </th>
-            <th>
-                Số lượng
-            </th>
-            <th>
-                Giá              
-            </th>
-            <th>
-               Tên khách hàng
-            </th>
-            <th>
-                Địa chỉ
-            </th>
-            <th>
-                TÌnh trạng đơn
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var orderDetail in Model)
-        {
-            var orderIndex = Model.IndexOf(orderDetail) + 1;
+
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    STT
+                </th>
+                <th>
+                    Code
+                </th>
+                <th>
+                    Sản phẩm
+                </th>
+                <th>
+                    Số lượng
+                </th>
+                <th>
+                    Giá
+                </th>
+                <th>
+                    Tên khách hàng
+                </th>
+                <th>
+                    Địa chỉ
+                </th>
+                <th>
+                    TÌnh trạng đơn
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var orderDetail in Model)
+            {
+                var orderIndex = Model.IndexOf(orderDetail) + 1;
                 <tr>
                     <td>
                         @orderIndex
                     </td>
                     <td>
-                         @Html.DisplayFor(modelItem => orderDetail.Order.Code)
+                        @Html.DisplayFor(modelItem => orderDetail.Order.Code)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => orderDetail.Product.Title)
@@ -56,17 +60,25 @@
                     <td>
                         @Html.DisplayFor(modelItem => orderDetail.Order.Address)
                     </td>
-                <td class="change-status-btn" data-order-detail-id="@orderDetail.Id">
-    <button type="button" class="btn @(orderDetail.Status == OrderStatus.ĐangXửLý ? "btn-warning" : (orderDetail.Status == OrderStatus.ĐangVậnChuyển ? "btn-info" : (orderDetail.Status == OrderStatus.ĐãGiao ? "btn-success" : "")))">
-        @Html.DisplayFor(modelItem => orderDetail.Status)
-    </button>
-</td>
+                    <td class="change-status-btn" data-order-detail-id="@orderDetail.Id">
+                        <button type="button" class="btn @(orderDetail.Status == OrderStatus.ĐangXửLý ? "btn-warning" : (orderDetail.Status == OrderStatus.ĐangVậnChuyển ? "btn-info" : (orderDetail.Status == OrderStatus.ĐãGiao ? "btn-success" : "")))">
+                            @Html.DisplayFor(modelItem => orderDetail.Status)
+                        </button>
+                    </td>
 
 
                 </tr>
-        }
-    </tbody>
-</table>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="col-12 text-center">
+        <h3 style="center">Sản phảm bạn hiện tại chưa có đơn hàng nào.</h3>
+    </div>
+}
+
 
 @section scripts {
     <script>
