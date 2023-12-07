@@ -11,6 +11,8 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="~/LayoutUser/clients/css/bootstrap.min.css" type="text/css">
@@ -23,7 +25,73 @@
     <link rel="stylesheet" href="~/LayoutUser/clients/css/style.css" type="text/css">
     <script src="~/LayoutUser/clients/js/jquery-3.3.1.min.js"></script>
     <script src="~/LayoutUser/clients/js/bootstrap.min.js"></script>
-   
+    <style>
+        /* Style for the dropdown menu */
+        .header__menu .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: beige;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .header__menu .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Style for dropdown items */
+        .header__menu .dropdown-menu a {
+            display: block;
+            color: black;
+            padding: 10px;
+            text-decoration: none;
+        }
+
+        /* Style for the "Đăng Tin" button */
+        .header__menu .create-post-button {
+            background: #f80;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: 400;
+            text-decoration: none;
+            padding: 8px 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        /* Style for the chat notification */
+
+      /* .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: beige;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }*/
+
+        /* Ẩn dropdown mặc định */
+        .nav-item.dropdown .dropdown-menu {
+            display: none;
+        }
+
+        /* Style cho dropdown items */
+        .nav-item.dropdown .dropdown-menu a {
+            display: block;
+            color: black;
+            padding: 10px;
+            text-decoration: none;
+        }
+
+        /* Bổ sung margin để giữ nguyên vị trí của biểu tượng khác */
+        .navbar-nav .nav-item {
+            margin-right: 10px; /* Điều chỉnh margin theo ý bạn */
+        }
+    </style>
 
 
 </head>
@@ -82,10 +150,18 @@
                         </div>
                         <div class="col-lg-3">
                             <div class="header__cart">
-                                <ul>
-                                    <li> <a href="#"><i class="fa fa-bell"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                    <li><a href="@Url.Action("Index","Cart")"><i class="fa fa-shopping-bag"></i></a></li>
+                                <ul class="navbar-nav">
+                                    <li class="nav-item dropdown" id="notificationDropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-bell"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="notificationDropdown">
+                                            <a class="dropdown-item" href="#">hoainam đã nhắn tin cho bạn</a>
+                                            <a class="dropdown-item" href="#">mylinh đã nhắn tin cho bạn</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-heart"></i></a></li>
+                                    <li class="nav-item"><a href="@Url.Action("Index","Cart")" class="nav-link"><i class="fa fa-shopping-bag"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -187,53 +263,39 @@
         </div>
     </footer>
 
-   
     <script src="~/LayoutUser/clients/js/jquery.nice-select.min.js"></script>
     <script src="~/LayoutUser/clients/js/jquery-ui.min.js"></script>
     <script src="~/LayoutUser/clients/js/jquery.slicknav.js"></script>
     <script src="~/LayoutUser/clients/js/mixitup.min.js"></script>
     <script src="~/LayoutUser/clients/js/owl.carousel.min.js"></script>
     <script src="~/LayoutUser/clients/js/main.js"></script>
-    
-@*     @await RenderSectionAsync("Scripts", required: false)
-*@    @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var notificationDropdown = document.getElementById("notificationDropdown");
+            var isDropdownVisible = false;
 
+            notificationDropdown.addEventListener("click", function (event) {
+                event.stopPropagation();
 
+                if (isDropdownVisible) {
+                    notificationDropdown.querySelector('.dropdown-menu').classList.remove("show");
+                } else {
+                    notificationDropdown.querySelector('.dropdown-menu').classList.add("show");
+                }
+
+                isDropdownVisible = !isDropdownVisible;
+            });
+
+            window.addEventListener("click", function (event) {
+                if (!event.target.closest('.nav-item.dropdown')) {
+                    if (isDropdownVisible) {
+                        notificationDropdown.querySelector('.dropdown-menu').classList.remove("show");
+                        isDropdownVisible = false;
+                    }
+                }
+            });
+        });
+    </script>
 </body>
-
 </html>
-<style>
-  /* Style for the dropdown menu */
-  .header__menu .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background-color: #555;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      z-index: 1;
-  }
-  .header__menu .dropdown:hover .dropdown-menu {
-      display: block;
-  }
-  /* Style for dropdown items */
-  .header__menu .dropdown-menu a {
-      display: block;
-      color: white;
-      padding: 10px;
-      text-decoration: none;
-  }
-   /* Style for the "Đăng Tin" button */
- .header__menu .create-post-button {
-     background: #f80;
-     color: #fff;
-     border: none;
-     cursor: pointer;
-     font-weight: 400;
-     text-decoration: none;
-     padding: 8px 20px;
-     text-transform: uppercase;
-     font-weight: bold;
-     border-radius: 5px;
- }
-</style>
