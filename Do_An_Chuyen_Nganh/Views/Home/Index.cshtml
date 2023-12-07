@@ -1,47 +1,48 @@
 ﻿@using X.PagedList.Mvc.Core;
 @model X.PagedList.IPagedList<Product>
 
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="../LayoutUser/clients/img/breadcrumb.jpg">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="breadcrumb__text">
-                    <h1>Vegetable’s Package</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<section class="breadcrumb-section set-bg" data-setbg="../LayoutUser/clients/img/banner/banner_trangchu.png" style="margin-bottom: 20px;height: 700px;"></section>
+
 <!-- Breadcrumb Section End -->
 <!-- Categories Section Begin -->
 <section class="categories">
     <div class="container">
+        <div class="section-title from-blog__title">
+            <h2>Danh Mục</h2>
+        </div>
         <div class="row">
             <div class="categories__slider owl-carousel">
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="../LayoutUser/clients/img/categories/cat-1.jpg">
-                        <h5><a href="#">Fresh Fruit</a></h5>
+                <div class="col-lg-3 text-center">
+                    <div class="categories__item set-bg">
+                        <iconify-icon icon="mdi:phone" width="150"></iconify-icon>
+                        <h5><a href="/Products/ProductInCategory?CategoryId=1">Điện Thoại</a></h5>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="../LayoutUser/clients/img/categories/cat-2.jpg">
-                        <h5><a href="#">Dried Fruit</a></h5>
+                <div class="col-lg-3 text-center">
+                    <div class="categories__item set-bg">
+                        <iconify-icon icon="game-icons:sofa" width="150"></iconify-icon>
+                        <h5><a href="/Products/ProductInCategory?CategoryId=3">Nội Thất</a></h5>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="../LayoutUser/clients/img/categories/cat-3.jpg">
-                        <h5><a href="#">Vegetables</a></h5>
+                <div class="col-lg-3 text-center">
+                    <div class="categories__item set-bg">
+                        <iconify-icon icon="emojione-monotone:womans-clothes" width="150"></iconify-icon>
+                        <h5><a href="/Products/ProductInCategory?CategoryId=4">Thời Trang</a></h5>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="../LayoutUser/clients/img/categories/cat-4.jpg">
-                        <h5><a href="#">drink fruits</a></h5>
+                <div class="col-lg-3 text-center">
+                    <div class="categories__item set-bg">
+                        <iconify-icon icon="bi:house-fill" width="150"></iconify-icon>
+                        <h5><a href="/Products/ProductInCategory?CategoryId=2">Bất Động Sản</a></h5>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="../LayoutUser/clients/img/categories/cat-5.jpg">
-                        <h5><a href="#">drink fruits</a></h5>
+                <div class="col-lg-3 text-center">
+                    <div class="categories__item set-bg">
+                        <iconify-icon icon="streamline:pet-paw-solid" width="150"></iconify-icon>
+                        <h5><a href="/Products/ProductInCategory?CategoryId=6">Thú Cưng</a></h5>
                     </div>
                 </div>
             </div>
@@ -74,7 +75,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title from-blog__title">
-                    <h2>From The Blog</h2>
+                    <h2>Blog</h2>
                 </div>
             </div>
         </div>
@@ -82,45 +83,45 @@
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="blog__item">
                     <div class="blog__item__pic">
-                        <img src="../LayoutUser/clients/img/blog/blog-1.jpg" alt="">
+                        <img src="../LayoutUser/clients/img/blog/blog_1.png" alt="">
                     </div>
                     <div class="blog__item__text">
                         <ul>
-                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                            <li><i class="fa fa-calendar-o"></i> Dec 1,2023</li>
                             <li><i class="fa fa-comment-o"></i> 5</li>
                         </ul>
-                        <h5><a href="#">Cooking tips make cooking simple</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                        <h5><a href="#">THƠM QUẢ MỌNG, NGỌT ANH ĐÀO! BỘ ĐÔI TRÀ & FREEZE</a></h5>
+                        <p>Với bộ đôi lễ hội mới coóng này từ Highlands Coffee, các bạn đã sẵn sàng cho chiếc outfit chất nhất để diện tới ...</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="blog__item">
                     <div class="blog__item__pic">
-                        <img src="../LayoutUser/clients/img/blog/blog-2.jpg" alt="">
+                        <img src="../LayoutUser/clients/img/blog/blog_2.jpg" alt="">
                     </div>
                     <div class="blog__item__text">
                         <ul>
-                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                            <li><i class="fa fa-calendar-o"></i> Dec 1,2023</li>
                             <li><i class="fa fa-comment-o"></i> 5</li>
                         </ul>
-                        <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                        <h5><a href="#">KEMDI, THẾ HỆ KEM MỚI CỦA HIGHLANDS COFFEE</a></h5>
+                        <p>Chính vì sự xuất hiện độc đáo, đa dạng cách trải nghiệm khác nhau như thế này thì bảo sao Kemdi là sản phẩm đặc ...</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="blog__item">
                     <div class="blog__item__pic">
-                        <img src="../LayoutUser/clients/img/blog/blog-3.jpg" alt="">
+                        <img src="../LayoutUser/clients/img/blog/blog_3.png" alt="">
                     </div>
                     <div class="blog__item__text">
                         <ul>
-                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                            <li><i class="fa fa-calendar-o"></i> Dec 1,2023</li>
                             <li><i class="fa fa-comment-o"></i> 5</li>
                         </ul>
-                        <h5><a href="#">Visit the clean farm in the US</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                        <h5><a href="#">HÉ LỘ CẶP ĐÔI MỚI CỦA LY-BIZ</a></h5>
+                        <p>Cộng đồng mạng chuẩn bị đón tin chấn động, High-patch vừa khui được cặp đôi mới của giới ly biz, Hé Xanh ...</p>
                     </div>
                 </div>
             </div>

@@ -53,7 +53,7 @@ namespace Do_An_Chuyen_Nganh.Models
 
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
         public ICollection<OrderDetail>? OrderDetails { get; set; }
         public ICollection<WishList>? WishLists { get; set; }
 

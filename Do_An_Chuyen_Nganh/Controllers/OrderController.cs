@@ -2,12 +2,8 @@
 using Do_An_Chuyen_Nganh.Data;
 using Do_An_Chuyen_Nganh.Infrastructure;
 using Do_An_Chuyen_Nganh.Models;
-using Do_An_Chuyen_Nganh.Models.Enums;
 using Do_An_Chuyen_Nganh.Service;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
 namespace Do_An_Chuyen_Nganh.Controllers
@@ -15,12 +11,10 @@ namespace Do_An_Chuyen_Nganh.Controllers
     public class OrderController : BaseController<Order>
     {
         private readonly CartManager _cartManager;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrderController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor) : base(context)
+        public OrderController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor) : base(context)
         {
             _cartManager = new CartManager(httpContextAccessor);
-            _userManager = userManager;
         }
 
         public static bool ValidateVNPhoneNumber(string phoneNumber)
@@ -204,7 +198,7 @@ namespace Do_An_Chuyen_Nganh.Controllers
                     order.Address = Address;
                     order.Payment = Payment;
                     order.Email = Email;
-                    order.UserId = _userManager.GetUserId(User);
+
 
 
                     HttpContext.Session.SetString("orderCode", code);
@@ -246,7 +240,6 @@ namespace Do_An_Chuyen_Nganh.Controllers
                             }
                             //Cập nhật tổng số tiền
                             order.Total = totalOrder;
-
                             Update(order);
                             _cartManager.ClearCart();
                             break;
@@ -261,64 +254,6 @@ namespace Do_An_Chuyen_Nganh.Controllers
             TempData["Errors"] = errors;
             return RedirectToAction("CheckOut", "Order");
         }
-
-        public IActionResult ManagePost()
-        {
-            
-
-            var userId = _userManager.GetUserId(User);
-
-            var orderDetailsForUser = _context.OrderDetails
-                .Include(od => od.Product)
-                    .ThenInclude(p => p.OrderDetails)
-                        .ThenInclude(od => od.Order)
-                .Where(od => od.Product.UserId == userId)
-                .ToList();
-
-            return View(orderDetailsForUser);
-
-        }
-        public IActionResult OrderedPost()
-        {
-
-
-            var userId = _userManager.GetUserId(User);
-
-            var orderDetailsForUser = _context.OrderDetails
-                .Include(od => od.Product)
-                    .ThenInclude(p => p.OrderDetails)
-                        .ThenInclude(od => od.Order)
-                .Where(od => od.Order.UserId == userId) // So sánh UserId trong Order
-                .ToList();
-
-            return View(orderDetailsForUser);
-
-        }
-        [HttpPost]
-        public IActionResult UpdateOrderStatus(int orderDetailId, string newStatus)
-        {
-            var orderDetail = _context.OrderDetails.Find(orderDetailId);
-
-            if (orderDetail != null)
-            {
-                // Cập nhật trạng thái
-                Enum.TryParse(newStatus, out OrderStatus status);
-                orderDetail.Status = status;
-
-                // Lưu thay đổi vào cơ sở dữ liệu
-                _context.SaveChanges();
-
-                return Json(new { success = true });
-            }
-
-            return Json(new { success = false });
-        }
-
-
-
-
-
-
 
         public ActionResult CompleteOrder()
         {
@@ -336,4 +271,3 @@ namespace Do_An_Chuyen_Nganh.Controllers
         }
     }
 }
-

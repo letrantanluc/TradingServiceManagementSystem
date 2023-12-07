@@ -1,0 +1,37 @@
+﻿@model Do_An_Chuyen_Nganh.Models.Provenience
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h4>Thêm Màu Mới</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProvenienceName" class="control-label">Tên Nguồn Gốc</label>
+                <input name="ProvenienceName" class="form-control" />
+                <span asp-validation-for="ProvenienceName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Thêm Nguồn Gốc</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="d-flex">
+    <a class="btn btn-back" href="/Admin/ManageProvenience/Index">
+        Về danh sách
+    </a>
+</div>
+
+<script type="text/javascript">
+    function removeDiacritics(str) {
+        str = str.replace(/Đ/g, "D");
+        str = str.replace(/đ/g, "d");
+        str = str.replace(/ /g, "-"); // replace space to "-"
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+</script>
