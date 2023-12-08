@@ -178,24 +178,66 @@
 </section>
 <!-- Product Details Section End -->
 <script>
+    //$(document).ready(function () {
+    //    $('.add-to-cart').click(function (e) {
+    //        e.preventDefault();
+    //        var productId = $(this).data('product-id');
+    //        var quantity = 1;
+    //        $.ajax({
+    //            url: '/Cart/AddToCart',
+    //            type: 'POST',
+    //            data: { productId: productId, quantity: quantity },
+    //            success: function (data) {
+    //                alert("Thêm thành công");
+    //                // Thực hiện các thay đổi trên giao diện để hiển thị giỏ hàng mới nhất
+    //            },
+    //            error: function () {
+    //                alert('An error occurred while adding to cart.');
+    //            }
+    //        });
+    //    });
+    //});
+
+
     $(document).ready(function () {
         $('.add-to-cart').click(function (e) {
             e.preventDefault();
             var productId = $(this).data('product-id');
             var quantity = 1;
+
+            // Kiểm tra trạng thái đăng nhập và thêm vào giỏ hàng
+            checkLoginAndAddToCart(productId, quantity);
+        });
+
+        function checkLoginAndAddToCart(productId, quantity) {
             $.ajax({
-                url: '/Cart/AddToCart',
-                type: 'POST',
-                data: { productId: productId, quantity: quantity },
-                success: function (data) {
-                    alert("Thêm thành công");
-                    // Thực hiện các thay đổi trên giao diện để hiển thị giỏ hàng mới nhất
+                url: '/Product/CheckLoginStatus',  // Thay đổi đường dẫn này đến action kiểm tra đăng nhập của bạn
+                type: 'GET',
+                success: function (isLoggedIn) {
+                    if (isLoggedIn) {
+                        // Nếu đã đăng nhập, thực hiện thêm vào giỏ hàng
+                        $.ajax({
+                            url: '/Cart/AddToCart',
+                            type: 'POST',
+                            data: { productId: productId, quantity: quantity },
+                            success: function (data) {
+                                alert("Thêm thành công");
+                                // Thực hiện các thay đổi trên giao diện để hiển thị giỏ hàng mới nhất
+                            },
+                            error: function () {
+                                alert('An error occurred while adding to cart.');
+                            }
+                        });
+                    } else {
+                        // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+                        window.location.href = '/Identity/Account/Login';  // Thay đổi đường dẫn này đến trang đăng nhập của bạn
+                    }
                 },
                 error: function () {
-                    alert('An error occurred while adding to cart.');
+                    alert('An error occurred while checking login status.');
                 }
             });
-        });
+        }
     });
 
 

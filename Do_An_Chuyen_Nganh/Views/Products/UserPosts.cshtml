@@ -14,7 +14,7 @@
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg" data-setbg="@Url.Content("~/images/" + item.Images.FirstOrDefault()?.ImagePath)">
                                         <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="@Url.Action("Details", "Products", new { id = item.Id })"><i class="fa fa-eye"></i></a></li>
                                             <li><a href="@Url.Action("Edit", "Products", new { id = item.Id })"><i class="fa fa-pencil"></i></a></li>
                                             @*<li><a href="@Url.Action("Delete", "Products", new { id = item.Id })"><i class="fa fa-trash"></i></a></li>*@
                                             <li><a href="#" class="btnDelete" data-id="@item.Id"><i class="fa fa-trash"></i></a></li>

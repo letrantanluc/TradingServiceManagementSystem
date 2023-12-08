@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Do_An_Chuyen_Nganh.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231203100704_createMessage")]
-    partial class createMessage
+    [Migration("20231208041324_newupdate2")]
+    partial class newupdate2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -169,15 +169,15 @@ namespace Do_An_Chuyen_Nganh.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Text")
+                    b.Property<string>("ReceiverID")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserID")
+                    b.Property<string>("SenderID")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -185,8 +185,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("Messages");
                 });
@@ -235,7 +233,12 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -261,6 +264,9 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Total")
@@ -319,7 +325,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("WarrantyId")
@@ -568,15 +573,13 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Message", b =>
+            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Order", b =>
                 {
-                    b.HasOne("Do_An_Chuyen_Nganh.Data.ApplicationUser", "Sender")
-                        .WithMany("Messages")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Do_An_Chuyen_Nganh.Data.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Sender");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.OrderDetail", b =>
@@ -727,11 +730,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasForeignKey("Do_An_Chuyen_Nganh.Models.Role", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Do_An_Chuyen_Nganh.Data.ApplicationUser", b =>
-                {
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Category", b =>

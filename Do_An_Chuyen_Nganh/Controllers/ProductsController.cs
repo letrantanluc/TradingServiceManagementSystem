@@ -161,7 +161,7 @@ namespace Do_An_Chuyen_Nganh.Controllers
             }
         //--------------------------------------------------------------------------------------------------
         // --------------------------------------------- Đăng tin ---------------------------------------------------
-
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName");
@@ -373,6 +373,14 @@ namespace Do_An_Chuyen_Nganh.Controllers
         }
         //--------------------------------------------------------------------------------------------------
         // --------------------------------------------- Chi tiết tin ---------------------------------------------------
+
+        // Kiểm tra đăng nhập khi addtocart
+        [HttpGet]
+        public IActionResult CheckLoginStatus()
+        {
+            bool isLoggedIn = User.Identity.IsAuthenticated;
+            return Json(isLoggedIn);
+        }
 
         public async Task<IActionResult> Details(int? id)
         {
