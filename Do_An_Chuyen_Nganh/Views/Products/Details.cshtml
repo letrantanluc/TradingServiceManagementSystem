@@ -178,6 +178,8 @@
 </section>
 <!-- Product Details Section End -->
 <script>
+    var senderId = "@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value";
+    var receiverId = "@Model.UserId";
     //$(document).ready(function () {
     //    $('.add-to-cart').click(function (e) {
     //        e.preventDefault();

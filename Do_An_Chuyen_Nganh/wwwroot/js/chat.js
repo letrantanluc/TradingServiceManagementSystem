@@ -26,7 +26,7 @@ connection.start().then(function () {
             // Hiển thị tin nhắn trong chat-body
             messages.forEach(function (message) {
                 var li = document.createElement("li");
-                li.textContent = `${message.senderID}: ${message.text}`;
+                li.textContent = `${message.senderUsername}: ${message.text}`;
                 document.getElementById("messagesList").appendChild(li);
             });
         })

@@ -1,5 +1,6 @@
 ﻿using Do_An_Chuyen_Nganh.Data;
 using Do_An_Chuyen_Nganh.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -8,10 +9,12 @@ namespace Do_An_Chuyen_Nganh.Hubs
 {
     public class ChatHub :Hub
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public ChatHub(ApplicationDbContext context)
+        public ChatHub(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
         public async Task SendMessage(string receiverId, string message)
@@ -26,7 +29,9 @@ namespace Do_An_Chuyen_Nganh.Hubs
             {
                 Text = message,
                 SenderID = senderId,
-                ReceiverID = receiverId
+                ReceiverID = receiverId,
+                SenderUsername = senderUsername,  // Thêm SenderUsername vào Message
+                ReceiverUsername = receiverUsername
             };
 
             _context.Messages.Add(chatMessage);
@@ -46,7 +51,7 @@ namespace Do_An_Chuyen_Nganh.Hubs
 
         private async Task<string> GetUsernameFromUserId(string userId)
         {
-            var user = await _context.Users.FindAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
             return user != null ? user.UserName : "Unknown User";
         }
         public async Task<IEnumerable<Message>> GetMessages(string senderId, string receiverId)
@@ -59,6 +64,7 @@ namespace Do_An_Chuyen_Nganh.Hubs
 
             return messages;
         }
+
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
