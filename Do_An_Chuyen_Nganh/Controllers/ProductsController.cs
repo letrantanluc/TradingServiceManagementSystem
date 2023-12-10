@@ -6,7 +6,7 @@ using Do_An_Chuyen_Nganh.Models;
 using Do_An_Chuyen_Nganh.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-
+using Do_An_Chuyen_Nganh.Models.Enums;
 
 namespace Do_An_Chuyen_Nganh.Controllers
 {
@@ -32,7 +32,7 @@ namespace Do_An_Chuyen_Nganh.Controllers
         {
 
             var products = await _context.Products
-                    .Where(x => x.CategoryId == CategoryId)
+                    .Where(x => x.CategoryId == CategoryId && x.Status == ProductStatus.Active)
                     .Skip((productPage - 1) * PageSize)
                     .Take(PageSize)
                     .Select(p => new
@@ -56,7 +56,7 @@ namespace Do_An_Chuyen_Nganh.Controllers
                     ItemsPerPage = PageSize,
                     CurrentPage = productPage,
                     TotalItems = await _context.Products
-                                                .Where(x => x.CategoryId == CategoryId)
+                                                .Where(x => x.CategoryId == CategoryId && x.Status == ProductStatus.Active)
                                                 .CountAsync()
                 }
             };
@@ -130,7 +130,7 @@ namespace Do_An_Chuyen_Nganh.Controllers
                 {
 
                     Products = await _context.Products
-                        .Where(x => x.Title.Contains(keywords))
+                        .Where(x => x.Title.Contains(keywords) && x.Status == ProductStatus.Active)
                         .Skip((productPage - 1) * PageSize)
                         .Take(PageSize)
                         .ToListAsync(),
@@ -138,7 +138,7 @@ namespace Do_An_Chuyen_Nganh.Controllers
                     {
                         ItemsPerPage = PageSize,
                         CurrentPage = productPage,
-                        TotalItems = await _context.Products.Where(x => x.Title.Contains(keywords))
+                        TotalItems = await _context.Products.Where(x => x.Title.Contains(keywords) && x.Status == ProductStatus.Active)
                             .CountAsync()
                     }
                 }
@@ -216,7 +216,7 @@ namespace Do_An_Chuyen_Nganh.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
 
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
@@ -463,9 +463,13 @@ namespace Do_An_Chuyen_Nganh.Controllers
             return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-
-
-
         
+
+
+
+
+
+
+
     }
 }

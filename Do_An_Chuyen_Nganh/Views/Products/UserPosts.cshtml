@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Do_An_Chuyen_Nganh.Models.Product>
-
+@using Do_An_Chuyen_Nganh.Models.Enums
 <section class="product spad">
     <div class="container">
         <div class="row">
@@ -18,8 +18,11 @@
                                             <li><a href="@Url.Action("Edit", "Products", new { id = item.Id })"><i class="fa fa-pencil"></i></a></li>
                                             @*<li><a href="@Url.Action("Delete", "Products", new { id = item.Id })"><i class="fa fa-trash"></i></a></li>*@
                                             <li><a href="#" class="btnDelete" data-id="@item.Id"><i class="fa fa-trash"></i></a></li>
-
+                                            
                                         </ul>
+                                        <button type="button" class="btn @(item.Status == ProductStatus.Pending ? "btn-warning" : "btn-success")">
+                                            @item.Status
+                                        </button>
                                     </div>
                                     <div class="product__item__text">
                                         <h6><a asp-controller="Products" asp-action="Details" asp-route-Id="@item.Id">@item.Title</a></h6>
