@@ -323,7 +323,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("WarrantyId")
@@ -570,6 +569,15 @@ namespace Do_An_Chuyen_Nganh.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
 
                     b.ToTable("Role");
+                });
+
+            modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.Order", b =>
+                {
+                    b.HasOne("Do_An_Chuyen_Nganh.Data.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Do_An_Chuyen_Nganh.Models.OrderDetail", b =>
