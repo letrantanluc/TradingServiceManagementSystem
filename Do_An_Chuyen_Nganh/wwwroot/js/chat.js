@@ -51,29 +51,3 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     event.preventDefault();
     document.getElementById("messageInput").value = "";
 });
-
-function getReceiversBySender(senderId) {
-    // Call a hub method to get receivers for the specified sender
-    connection.invoke("GetReceiversBySender", senderId)
-        .then(function (receivers) {
-            console.log(`Receivers who messaged ${senderId}:`, receivers);
-
-            // Update the list-receiver with the received data
-            updateReceiverList(receivers);
-        })
-        .catch(function (err) {
-            console.error(err.toString());
-        });
-}
-
-function updateReceiverList(receivers) {
-    var listReceiver = document.querySelector('.list-receiver');
-    listReceiver.innerHTML = ''; // Clear the existing list
-
-    // Iterate through the receivers and update the list
-    for (var i = 0; i < receivers.length; i++) {
-        var listItem = document.createElement('li');
-        listItem.textContent = receivers[i];
-        listReceiver.appendChild(listItem);
-    }
-}
