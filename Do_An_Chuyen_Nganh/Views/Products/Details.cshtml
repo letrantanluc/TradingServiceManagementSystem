@@ -113,19 +113,19 @@
                         <div class="chat-header">
                             <h5>@Model.UserName</h5>
                             <input id="userInput" value="@Model.UserId" type="hidden" />
-                            <button class="btn"  onclick="toggleChat('@Model.UserId', '@User.Identity.Name')">
+                            <button class="btn" onclick="toggleChat('@Model.UserId', '@User.Identity.Name')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
                                 </svg>
                             </button>
                         </div>
                         <div class="chat-body">
-                            <!-- Chat messages can go here -->
+                            <!-- Những tin nhắn trò chuyện sẽ được hiển thị ở đây -->
                             <ul id="messagesList"></ul>
                         </div>
                         <div class="chat-input">
                             <input type="text" id="messageInput" placeholder="Nhập tin nhắn...">
-                            <button id="sendButton">Send</button>
+                            <button id="sendButton">Gửi</button>
                         </div>
                     </div>
                    
@@ -178,6 +178,8 @@
 </section>
 <!-- Product Details Section End -->
 <script>
+    var senderId = "@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value";
+    var receiverId = "@Model.UserId";
     //$(document).ready(function () {
     //    $('.add-to-cart').click(function (e) {
     //        e.preventDefault();
