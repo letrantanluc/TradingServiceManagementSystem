@@ -22,7 +22,11 @@ modelbuilder.Services.AddDefaultIdentity<ApplicationUser>(options => options.Sig
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 modelbuilder.Services.AddControllersWithViews();
-modelbuilder.Services.AddSignalR();
+modelbuilder.Services.AddSignalR(
+    options =>
+    {
+        options.ClientTimeoutInterval = TimeSpan.FromSeconds(300);
+    });
 
 //momo
 var momoSettings = modelbuilder.Configuration.GetSection("MomoSettings").Get<MomoSettings>();
