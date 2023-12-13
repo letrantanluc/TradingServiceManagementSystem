@@ -5,12 +5,18 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 // Tắt nút gửi cho đến khi kết nối được thiết lập.
 document.getElementById("sendButton").disabled = true;
 
-connection.on("ReceiveMessage", function (username, message) {
-    console.log("ReceiveMessage called:", username, message);
+connection.on("ReceiveUsersWithMessages", function (usernames) {
+    console.log("ReceiveUsersWithMessages called:", usernames);
 
-    var li = document.createElement("li");
-    li.textContent = `${username}: ${message}`;
-    document.getElementById("messagesList").appendChild(li);
+    // Update the HTML to display the list of usernames
+    var ul = document.getElementById("usersList");
+    ul.innerHTML = ""; // Clear previous usernames
+
+    usernames.forEach(function (username) {
+        var li = document.createElement("li");
+        li.textContent = username;
+        ul.appendChild(li);
+    });
 });
 
 console.log("receiverId:", receiverId);

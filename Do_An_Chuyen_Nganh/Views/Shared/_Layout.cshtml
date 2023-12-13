@@ -12,6 +12,7 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-BEBtEc9v2C+VdyQHwCpnhzm2fN/uFq6T8FQNNOZXdUTrA+X/D3SEzF/CtCSlKL0pFbdVSf">
 
 
     <!-- Css Styles -->
@@ -151,14 +152,12 @@
                         <div class="col-lg-3">
                             <div class="header__cart">
                                 <ul class="navbar-nav">
-                                    <li class="nav-item dropdown" id="notificationDropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-bell"></i>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Chat","Message")" class="nav-link">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">
+                                                <path fill="#000000" d="M256.6 8C116.5 8 8 110.3 8 248.6c0 72.3 29.7 134.8 78.1 177.9 8.4 7.5 6.6 11.9 8.1 58.2A19.9 19.9 0 0 0 122 502.3c52.9-23.3 53.6-25.1 62.6-22.7C337.9 521.8 504 423.7 504 248.6 504 110.3 396.6 8 256.6 8zm149.2 185.1l-73 115.6a37.4 37.4 0 0 1 -53.9 9.9l-58.1-43.5a15 15 0 0 0 -18 0l-78.4 59.4c-10.5 7.9-24.2-4.6-17.1-15.7l73-115.6a37.4 37.4 0 0 1 53.9-9.9l58.1 43.5a15 15 0 0 0 18 0l78.4-59.4c10.4-8 24.1 4.5 17.1 15.6z" />
+                                            </svg>
                                         </a>
-                                        <div class="dropdown-menu" aria-labelledby="notificationDropdown">
-                                            <a class="dropdown-item" href="#">hoainam đã nhắn tin cho bạn</a>
-                                            <a class="dropdown-item" href="#">mylinh đã nhắn tin cho bạn</a>
-                                        </div>
                                     </li>
                                     <li class="nav-item"><a href="@Url.Action("WishList","WishList")" class="nav-link"><i class="fa fa-heart"></i></a></li>
                                     <li class="nav-item"><a href="@Url.Action("Index","Cart")" class="nav-link"><i class="fa fa-shopping-bag"></i></a></li>
