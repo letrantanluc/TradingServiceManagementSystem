@@ -47,11 +47,11 @@ connection.start().then(function () {
             var ul = document.getElementById("messagesList");
             ul.innerHTML = ""; // Xóa tin nhắn cũ
 
-            //messages.forEach(function (message) {
-            //    var li = document.createElement("li");
-            //    li.textContent = `${message.senderUsername}: ${message.text}`;
-            //    ul.appendChild(li);
-            //});
+            messages.forEach(function (message) {
+                var li = document.createElement("li");
+                li.textContent = `${message.senderUsername}: ${message.text}`;
+                ul.appendChild(li);
+            });
         })
         .catch(function (err) {
             console.error(err.toString());
@@ -60,25 +60,21 @@ connection.start().then(function () {
     console.error(err.toString());
 });
 
-//document.getElementById("sendButton").addEventListener("click", function (event) {
-//    var message = document.getElementById("messageInput").value;
+document.getElementById("sendButton").addEventListener("click", function (event) {
+    var message = document.getElementById("messageInput").value;
 
-//    //if (receiverId && message) {
-//    //    // Hiển thị tin nhắn vừa gửi trong chat-body
-//    //    //var ul = document.getElementById("messagesList");
-//    //    //var li = document.createElement("li");
-//    //    // Thay thế 'YourUsername' bằng tên người dùng hiện tại, nếu bạn có
-//    //    //li.textContent = `You: ${message}`;
-//    //    //ul.appendChild(li);
+    if (receiverId && message) {
+        //var ul = document.getElementById("messagesList");
+        //var li = document.createElement("li");
+        //li.textContent = `You: ${message}`;
+        //ul.appendChild(li);
 
-//    //    // Gửi tin nhắn
-//    //    //connection.invoke("SendMessage", receiverId, message).catch(function (err) {
-//    //    //    console.error(err.toString());
-//    //    //});
+        connection.invoke("SendMessage", receiverId, message).catch(function (err) {
+            console.error(err.toString());
+        });
 
-//    //    // Xóa nội dung tin nhắn
-//    //    document.getElementById("messageInput").value = "";
-//    //}
-
-//    event.preventDefault();
+       
+        document.getElementById("messageInput").value = "";
+    }
+    event.preventDefault();
 });

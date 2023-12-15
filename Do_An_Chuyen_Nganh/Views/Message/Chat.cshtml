@@ -112,8 +112,8 @@
 @section scripts {
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/lib/jquery/dist/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/js/chat.js"></script>
-    <script>
+@*    <script src="~/js/chat.js"></script>
+*@    <script>
         var senderId = "@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value";
         var receiverId;
 
