@@ -285,65 +285,65 @@ namespace Do_An_Chuyen_Nganh.Migrations
             //                principalColumn: "Id");
             //        });
 
-            migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    ColorId = table.Column<int>(type: "int", nullable: false),
-                    ConditionId = table.Column<int>(type: "int", nullable: false),
-                    ProvenienceId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WarrantyId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Products_Category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_Colors_ColorId",
-                        column: x => x.ColorId,
-                        principalTable: "Colors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_Conditions_ConditionId",
-                        column: x => x.ConditionId,
-                        principalTable: "Conditions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_Proveniences_ProvenienceId",
-                        column: x => x.ProvenienceId,
-                        principalTable: "Proveniences",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_Warranties_WarrantyId",
-                        column: x => x.WarrantyId,
-                        principalTable: "Warranties",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            //migrationBuilder.CreateTable(
+            //    name: "Products",
+            //    columns: table => new
+            //    {
+            //        Id = table.Column<int>(type: "int", nullable: false)
+            //            .Annotation("SqlServer:Identity", "1, 1"),
+            //        Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+            //        Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+            //        Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+            //        CategoryId = table.Column<int>(type: "int", nullable: false),
+            //        ColorId = table.Column<int>(type: "int", nullable: false),
+            //        ConditionId = table.Column<int>(type: "int", nullable: false),
+            //        ProvenienceId = table.Column<int>(type: "int", nullable: false),
+            //        Quantity = table.Column<int>(type: "int", nullable: false),
+            //        Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //        WarrantyId = table.Column<int>(type: "int", nullable: false),
+            //        UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+            //        UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //        Status = table.Column<int>(type: "int", nullable: false)
+            //    },
+            //    constraints: table =>
+            //    {
+            //        table.PrimaryKey("PK_Products", x => x.Id);
+            //        table.ForeignKey(
+            //            name: "FK_Products_AspNetUsers_UserId",
+            //            column: x => x.UserId,
+            //            principalTable: "AspNetUsers",
+            //            principalColumn: "Id");
+            //        table.ForeignKey(
+            //            name: "FK_Products_Category_CategoryId",
+            //            column: x => x.CategoryId,
+            //            principalTable: "Category",
+            //            principalColumn: "Id",
+            //            onDelete: ReferentialAction.Cascade);
+            //        table.ForeignKey(
+            //            name: "FK_Products_Colors_ColorId",
+            //            column: x => x.ColorId,
+            //            principalTable: "Colors",
+            //            principalColumn: "Id",
+            //            onDelete: ReferentialAction.Cascade);
+            //        table.ForeignKey(
+            //            name: "FK_Products_Conditions_ConditionId",
+            //            column: x => x.ConditionId,
+            //            principalTable: "Conditions",
+            //            principalColumn: "Id",
+            //            onDelete: ReferentialAction.Cascade);
+            //        table.ForeignKey(
+            //            name: "FK_Products_Proveniences_ProvenienceId",
+            //            column: x => x.ProvenienceId,
+            //            principalTable: "Proveniences",
+            //            principalColumn: "Id",
+            //            onDelete: ReferentialAction.Cascade);
+            //        table.ForeignKey(
+            //            name: "FK_Products_Warranties_WarrantyId",
+            //            column: x => x.WarrantyId,
+            //            principalTable: "Warranties",
+            //            principalColumn: "Id",
+            //            onDelete: ReferentialAction.Cascade);
+            //    });
 
             //    migrationBuilder.CreateTable(
             //        name: "OrderDetails",

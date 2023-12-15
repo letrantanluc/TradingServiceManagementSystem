@@ -287,8 +287,10 @@ namespace Do_An_Chuyen_Nganh.Controllers
                 {
                     // Lấy thông tin người đăng nhập
                     var userId = _userManager.GetUserId(User);
+                    var userName = _userManager.GetUserName(User);
                     // Gán UserId cho sản phẩm
                     product.UserId = userId;
+                    product.UserName = userName;
 
                     if (imagesToDelete != null)
                     {

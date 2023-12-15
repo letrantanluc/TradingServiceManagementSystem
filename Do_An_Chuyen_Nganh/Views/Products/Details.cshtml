@@ -213,7 +213,7 @@
 
         function checkLoginAndAddToCart(productId, quantity) {
             $.ajax({
-                url: '/Product/CheckLoginStatus',  // Thay đổi đường dẫn này đến action kiểm tra đăng nhập của bạn
+                url: '/Products/CheckLoginStatus',  // Thay đổi đường dẫn này đến action kiểm tra đăng nhập của bạn
                 type: 'GET',
                 success: function (isLoggedIn) {
                     if (isLoggedIn) {

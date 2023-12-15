@@ -26,30 +26,24 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet("getstatistical")]
+        [HttpGet("Getstatistical")]
         public ActionResult GetStatistical(string fromDate, string toDate)
         {
-            var querry = from o in _context.Orders
-                         join od in _context.OrderDetails on o.Id equals od.Id
-                         join p in _context.Products on od.ProductId equals p.Id
-                         select new
-                         {
-                             CreatedAt = o.CreatedAt,
-                             Quantity = od.Quantity,
-                             Price = od.Price,
-                             OriginalPrice = p.Price
-                         };
-            if (!string.IsNullOrEmpty(fromDate))
-            {
-                DateTime startDate = DateTime.ParseExact(fromDate, "dd/MM/yyyy", null);
-                querry = querry.Where(x => x.CreatedAt == startDate);
-            }
-            if (!string.IsNullOrEmpty(toDate))
-            {
-                DateTime endDate = DateTime.ParseExact(toDate, "dd/MM/yyyy", null);
-                querry = querry.Where(X => X.CreatedAt == endDate);
-            }
-            var result = querry
+            DateTime startDate = string.IsNullOrEmpty(fromDate) ? DateTime.MinValue : DateTime.ParseExact(fromDate, "dd/MM/yyyy", null);
+            DateTime endDate = string.IsNullOrEmpty(toDate) ? DateTime.MaxValue : DateTime.ParseExact(toDate, "dd/MM/yyyy", null);
+            var query = from o in _context.Orders
+                        join od in _context.OrderDetails on o.Id equals od.Id
+                        join p in _context.Products on od.ProductId equals p.Id
+                        where o.CreatedAt.Date >= startDate.Date && o.CreatedAt.Date <= endDate.Date
+                        select new
+                        {
+                            CreatedAt = o.CreatedAt,
+                            Quantity = od.Quantity,
+                            Price = od.Price,
+                            OriginalPrice = p.Price
+                        };
+
+            var result = query
                .GroupBy(x => x.CreatedAt.Date)
                .Select(x => new
                {
@@ -63,7 +57,27 @@ namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
                    DoanhThu = x.TotalSell,
                    LoiNhuan = x.TotalSell - x.TotalBuy,
                });
+
             return Json(new { Date = result });
+        }
+
+        [HttpGet("GetOrderStatistics")]
+        public ActionResult GetOrderStatistics()
+        {
+            var orderStatistics = _context.Orders
+                .GroupBy(o => o.CreatedAt.Date)
+                .Select(g => new
+                {
+                    Date = g.Key,
+                    TotalOrders = g.Count()
+                })
+                .OrderByDescending(x => x.Date)
+                .ToList();
+
+            // Calculate the total number of orders (you can customize this based on your specific needs)
+            var totalOrders = orderStatistics.Sum(x => x.TotalOrders);
+
+            return Json(new { TotalOrders = totalOrders, OrderStatistics = orderStatistics });
         }
     }
 }
