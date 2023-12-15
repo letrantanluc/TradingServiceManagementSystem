@@ -2,6 +2,12 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 var receiverId;
+connection.on("ReceiveMessage", function (username, message) {
+    var ul = document.getElementById("messagesList");
+    var li = document.createElement("li");
+    li.textContent = `${username}: ${message}`;
+    ul.appendChild(li);
+});
 // Tắt nút gửi cho đến khi kết nối được thiết lập.
 document.getElementById("sendButton").disabled = true;
 
@@ -85,11 +91,11 @@ document.getElementById("sendButton").addEventListener("click", function (event)
 
     if (receiverId && message) {
         // Hiển thị tin nhắn vừa gửi trong chat-body
-        var ul = document.getElementById("messagesList");
-        var li = document.createElement("li");
-        // Thay thế 'YourUsername' bằng tên người dùng hiện tại, nếu bạn có
-        li.textContent = `You: ${message}`;
-        ul.appendChild(li);
+        //var ul = document.getElementById("messagesList");
+        //var li = document.createElement("li");
+        //// Thay thế 'YourUsername' bằng tên người dùng hiện tại, nếu bạn có
+        //li.textContent = `You: ${message}`;
+        //ul.appendChild(li);
 
         // Gửi tin nhắn
         connection.invoke("SendMessage", receiverId, message).catch(function (err) {
@@ -99,7 +105,6 @@ document.getElementById("sendButton").addEventListener("click", function (event)
         // Xóa nội dung tin nhắn
         document.getElementById("messageInput").value = "";
     }
-
     event.preventDefault();
 });
 
