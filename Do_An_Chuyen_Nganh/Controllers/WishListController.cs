@@ -1,5 +1,6 @@
 ﻿using Do_An_Chuyen_Nganh.Data;
 using Do_An_Chuyen_Nganh.Models;
+using Do_An_Chuyen_Nganh.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +21,7 @@ namespace Do_An_Chuyen_Nganh.Controllers
             // Lấy danh sách yêu thích của người dùng
             var wishList = _context.WishList
                 .Include(w => w.Product)
-                .Where(w => w.UserName == userName).Include(p => p.Product.Images)
+                .Where(w => w.UserName == userName && w.Product.Status == ProductStatus.Active).Include(p => p.Product.Images)
                 .ToList();
 
             return View(wishList);

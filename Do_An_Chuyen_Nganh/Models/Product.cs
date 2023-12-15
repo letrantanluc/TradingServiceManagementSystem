@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Do_An_Chuyen_Nganh.Data;
+using Do_An_Chuyen_Nganh.Models.Enums;
 
 namespace Do_An_Chuyen_Nganh.Models
 {
@@ -62,7 +63,7 @@ namespace Do_An_Chuyen_Nganh.Models
         public List<IFormFile>? ImageFile { get; set; }
 
         public virtual ICollection<ProductImage>? Images { get; set; }
-
+        public ProductStatus Status { get; set; } = ProductStatus.Pending;
 
     }
 
