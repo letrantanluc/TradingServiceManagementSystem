@@ -2,6 +2,7 @@
 using Do_An_Chuyen_Nganh.Hubs;
 using Do_An_Chuyen_Nganh.Models;
 using Do_An_Chuyen_Nganh.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using System.Security.Claims;
 
 namespace Do_An_Chuyen_Nganh.Controllers
 {
+    [Authorize]
     public class MessageController : BaseController<Message>
     {
         private readonly ApplicationDbContext _context;

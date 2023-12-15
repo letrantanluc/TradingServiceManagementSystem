@@ -1,32 +1,21 @@
-﻿@*@model Do_An_Chuyen_Nganh.Models.Message
-*@
+﻿
 @{
-    ViewData["Title"] = "Chat Chít";
+    ViewData["Title"] = "Chat";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container" style="height:50vh">
     <div class="row">
         <div class="col-sm-4">
-            <ul id="usersList">
-               @* @foreach (var user in Model)
-                {
-                    <li class="user-item">
-                        <div class="card">
-                            <div class="card-body">
-                                <button class="btn" style="width: 100%;" >
-                                    <span>@user.userName</span>
-                                </button>
-                            </div>
-                        </div>
-                    </li>
-                }*@
+            <ul id="usersList" style="overflow-y:scroll">
+              
             </ul>
         </div>
         <div class="col-sm-8">
             <div class="chat-window" id="chatWindow">
                 <div class="chat-header">
-                    <!-- You can add user-related information here if needed -->
+                    <h5></h5>
+                    <input id="receiverInput" type="hidden" />
                 </div>
                 <div class="chat-body">
                     <ul id="messagesList"></ul>
@@ -126,8 +115,10 @@
     <script src="~/js/chat.js"></script>
     <script>
         var senderId = "@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value";
-        console.log(senderId);
-        var receiverId = "";
+        var receiverId;
+
+        console.log("senderId: " +senderId);
+        console.log("receiverId: " + receiverId);
         //connection.invoke("GetUsersWithMessages", senderId);
         function toggleChat(receiverId) {
             var chatWindow = document.getElementById('chatWindow');

@@ -3,7 +3,6 @@ using Do_An_Chuyen_Nganh.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-//using NuGet.Protocol.Plugins;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -56,17 +55,7 @@ namespace Do_An_Chuyen_Nganh.Hubs
             var user = await _userManager.FindByIdAsync(userId);
             return user != null ? user.UserName : "Unknown User";
         }
-        //public async Task<IEnumerable<Message>> GetMessages(string senderId, string receiverId)
-        //{
-        //    var messages = await _context.Messages
-        //        .Where(m => (m.SenderID == senderId && m.ReceiverID == receiverId) ||
-        //                    (m.SenderID == receiverId && m.ReceiverID == senderId))
-        //        .OrderBy(m => m.When)
-        //        .ToListAsync();
-
-        //    return messages;
-        //}
-
+       
         public async Task<IEnumerable<Message>> GetMessages(string senderId, string receiverId)
         {
             var messages = await _context.Messages
@@ -93,7 +82,6 @@ namespace Do_An_Chuyen_Nganh.Hubs
             //var senderMessages = await _context.Messages.Where(m => m.SenderID == userId).Select(m => m.ReceiverID).Distinct().ToListAsync();
             //var receiverMessages = await _context.Messages.Where(m => m.ReceiverID == userId).Select(m => m.SenderID).Distinct().ToListAsync();
             //var allUsers = senderMessages.Concat(receiverMessages).Distinct();
-
             var senderUsers = await _context.Messages
                 .Where(m => m.SenderID == userId)
                 .Select(m => m.ReceiverID)
@@ -111,25 +99,9 @@ namespace Do_An_Chuyen_Nganh.Hubs
             var allUsers = await _context.Users
                 .Where(u => allUserIDs.Contains(u.Id))
                 .ToListAsync();
-
-
-
             var usernames = new List<string>();
-            //foreach (var user in allUsers)
-            //{
-            //    var username = await GetUsernameFromUserId(user);
-            //    usernames.Add(username);
-            //}
-            //Debug.WriteLine("HIHI");
-
-            //Debug.WriteLine(usernames);
-            // Send the list of usernames to the client
             await Clients.Caller.SendCoreAsync("ReceiveUsersWithMessages", new object[] { allUsers });
-
             return usernames;
-
         }
-
-
     }
 }
