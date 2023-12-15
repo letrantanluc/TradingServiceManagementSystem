@@ -1,7 +1,7 @@
 ﻿"use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-
+var receiverId;
 // Tắt nút gửi cho đến khi kết nối được thiết lập.
 document.getElementById("sendButton").disabled = true;
 
@@ -30,7 +30,10 @@ connection.on("ReceiveUsersWithMessages", function (messages) {
         var button = document.createElement("button");
         button.className = "btn";
         button.setAttribute("style", "width: 100%;");
-        button.setAttribute("onclick", `toggleChat('${message.id}')`);
+        button.onclick = function () {
+            setReceiverId(message.id);
+            document.getElementById('chatWindow').querySelector('.chat-header h5').textContent = message.userName;
+        };
 
         var span = document.createElement("span");
         span.textContent = message.userName; // Assuming you have userName in your message object
@@ -44,8 +47,6 @@ connection.on("ReceiveUsersWithMessages", function (messages) {
         document.getElementById("usersList").appendChild(li);
     });
 });
-
-console.log("receiverId:", receiverId);
 
 connection.start().then(function () {
     document.getElementById("sendButton").disabled = false;
@@ -80,16 +81,31 @@ connection.start().then(function () {
 });
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
-    var username = document.getElementById("userInput").value; // Make sure the id is correct
     var message = document.getElementById("messageInput").value;
 
-    // Use console.log for logging in JavaScript
-    console.log(`Sent message from ${username}: ${message}`);
+    if (receiverId && message) {
+        // Hiển thị tin nhắn vừa gửi trong chat-body
+        var ul = document.getElementById("messagesList");
+        var li = document.createElement("li");
+        // Thay thế 'YourUsername' bằng tên người dùng hiện tại, nếu bạn có
+        li.textContent = `You: ${message}`;
+        ul.appendChild(li);
 
-    connection.invoke("SendMessage", username, message).catch(function (err) {
-        console.error(err.toString());
-    });
+        // Gửi tin nhắn
+        connection.invoke("SendMessage", receiverId, message).catch(function (err) {
+            console.error(err.toString());
+        });
+
+        // Xóa nội dung tin nhắn
+        document.getElementById("messageInput").value = "";
+    }
 
     event.preventDefault();
-    document.getElementById("messageInput").value = "";
 });
+
+function setReceiverId(id) {
+    receiverId = id;
+    document.getElementById('receiverInput').value = id;
+    console.log("Receiver ID set to:", receiverId);
+    toggleChat(receiverId);
+}

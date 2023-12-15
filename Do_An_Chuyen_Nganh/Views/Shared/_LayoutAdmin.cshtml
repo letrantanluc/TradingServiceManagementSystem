@@ -22,6 +22,7 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="~/LayoutAdmin/assets/images/favicon.ico" />
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    @RenderSection("scripts", required: false)
 
 </head>
 <body>
@@ -223,7 +224,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/Dashboard">
+                        <a class="nav-link" href="/admin/ManageStatistical/Index">
                             <span class="menu-title">Thống kê</span>
                             <i class="mdi mdi-chart-line menu-icon"></i>
                         </a>
