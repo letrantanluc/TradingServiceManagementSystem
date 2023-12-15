@@ -483,7 +483,7 @@ ol {
 .header__cart ul li a span {
 	height: 13px;
 	width: 13px;
-	background: #7fad39;
+	background: red;
 	font-size: 10px;
 	color: #ffffff;
 	line-height: 13px;

@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewData["Title"] = "Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="height:50vh">
+    <div class="row">
+        <div class="col-sm-4">
+            <ul id="usersList" style="overflow-y:scroll">
+              
+            </ul>
+        </div>
+        <div class="col-sm-8">
+            <div class="chat-window" id="chatWindow">
+                <div class="chat-header">
+                    <h5></h5>
+                    <input id="receiverInput" type="hidden" />
+                </div>
+                <div class="chat-body">
+                    <ul id="messagesList"></ul>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Nhập tin nhắn...">
+                    <button id="sendButton">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* CSS styling for the chat window */
+    .chat-window {
+        bottom: 0;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        flex-direction: column;
+    }
+
+    .chat-window.open {
+        height: 450px;
+        display: flex;
+    }
+
+    .chat-header {
+        height: 50px;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .close-chat {
+        background: none;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .chat-body {
+        height: 400px;
+        overflow-y: scroll;
+        padding: 10px;
+        flex-grow: 1;
+    }
+
+    .chat-input {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+    }
+
+    .chat-input input {
+        flex-grow: 1;
+        margin-right: 10px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .chat-input button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    #usersList,
+    #messagesList {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Xóa chấm đầu dòng của thẻ li trong thẻ ul */
+    .user-item {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+
+@section scripts {
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/jquery/dist/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/chat.js"></script>
+    <script>
+        var senderId = "@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value";
+        var receiverId;
+
+        console.log("senderId: " +senderId);
+        console.log("receiverId: " + receiverId);
+        //connection.invoke("GetUsersWithMessages", senderId);
+        function toggleChat(receiverId) {
+            var chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('open');
+
+            if (chatWindow.classList.contains('open')) {
+                // Connect to SignalR with receiver ID
+                connection.invoke("AddToGroup", receiverId);
+
+                // Fetch and display old messages
+                connection.invoke("GetMessages", senderId, receiverId)
+                    .then(function (messages) {
+                        console.log("Old messages received:", messages);
+
+                        // Clear previous messages
+                        var ul = document.getElementById("messagesList");
+                        ul.innerHTML = "";
+
+                        // Display messages in chat-body
+                        messages.forEach(function (message) {
+                            var li = document.createElement("li");
+                            li.textContent = `${message.senderUsername}: ${message.text}`;
+                            document.getElementById("messagesList").appendChild(li);
+                        });
+                    })
+                    .catch(function (err) {
+                        console.error(err.toString());
+                    });
+            } else {
+                // Disconnect or perform any cleanup
+                connection.invoke("RemoveFromGroup", receiverId);
+            }
+        }
+    </script>
+    <script src="~/js/getUsername.js"></script>
+
+}

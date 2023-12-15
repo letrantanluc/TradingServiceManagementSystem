@@ -3,6 +3,7 @@ using Do_An_Chuyen_Nganh.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace Do_An_Chuyen_Nganh.Hubs
@@ -54,6 +55,7 @@ namespace Do_An_Chuyen_Nganh.Hubs
             var user = await _userManager.FindByIdAsync(userId);
             return user != null ? user.UserName : "Unknown User";
         }
+       
         public async Task<IEnumerable<Message>> GetMessages(string senderId, string receiverId)
         {
             var messages = await _context.Messages
@@ -75,6 +77,31 @@ namespace Do_An_Chuyen_Nganh.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
+        public async Task<IEnumerable<string>> GetUsersWithMessages(string userId)
+        {
+            //var senderMessages = await _context.Messages.Where(m => m.SenderID == userId).Select(m => m.ReceiverID).Distinct().ToListAsync();
+            //var receiverMessages = await _context.Messages.Where(m => m.ReceiverID == userId).Select(m => m.SenderID).Distinct().ToListAsync();
+            //var allUsers = senderMessages.Concat(receiverMessages).Distinct();
+            var senderUsers = await _context.Messages
+                .Where(m => m.SenderID == userId)
+                .Select(m => m.ReceiverID)
+                .Distinct()
+                .ToListAsync();
 
+            var receiverUsers = await _context.Messages
+                .Where(m => m.ReceiverID == userId)
+                .Select(m => m.SenderID)
+                .Distinct()
+                .ToListAsync();
+
+            var allUserIDs = senderUsers.Concat(receiverUsers).Distinct().ToList();
+            //var allUserIDs = senderUserIDs.Concat(receiverUserIDs).Distinct();
+            var allUsers = await _context.Users
+                .Where(u => allUserIDs.Contains(u.Id))
+                .ToListAsync();
+            var usernames = new List<string>();
+            await Clients.Caller.SendCoreAsync("ReceiveUsersWithMessages", new object[] { allUsers });
+            return usernames;
+        }
     }
 }

@@ -172,7 +172,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReceiverUsername")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SenderID")
@@ -180,7 +179,6 @@ namespace Do_An_Chuyen_Nganh.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SenderUsername")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Text")
