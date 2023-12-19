@@ -2,11 +2,13 @@
 using Do_An_Chuyen_Nganh.Data;
 using Do_An_Chuyen_Nganh.Models;
 using Do_An_Chuyen_Nganh.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     [Route("Admin/ManageProduct")]
     public class ManageProductController : BaseController<Product>

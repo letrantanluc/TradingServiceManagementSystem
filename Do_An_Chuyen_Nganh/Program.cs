@@ -68,6 +68,16 @@ app.MapHub<ChatHub>("/chatHub");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "export-excel",
+    pattern: "export/excel",
+    defaults: new { controller = "Report", action = "ExportToExcel" });
+
+app.MapControllerRoute(
+    name: "export-pdf",
+    pattern: "export/pdf",
+    defaults: new { controller = "Report", action = "ExportToPdf" });
+
 app.MapRazorPages();
 
 app.Run();
