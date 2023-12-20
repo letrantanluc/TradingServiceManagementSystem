@@ -11,8 +11,11 @@ using Do_An_Chuyen_Nganh.Controllers;
 using System.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     [Route("Admin/ManageRole")]
     public class ManageRoleController : BaseController<IdentityRole>

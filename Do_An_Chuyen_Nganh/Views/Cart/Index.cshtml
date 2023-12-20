@@ -26,11 +26,11 @@
                                     <td class="shoping__cart__price">
                                         @item.Price.ToString("N0")đ
                                     </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
+                                   <td class="shoping__cart__quantity">
+                                        <div class="counter">
+                                            <button class="btn_counter minus-text" onclick="minusQuantity('@item.Id')" id="decrease">-</button>
+                                            <input type="number" id="quantity_@item.Id" value="@item.Quantity" onchange="updateCart('@item.Id')" pattern="[0-9]">
+                                            <button class="btn_counter plus-text" onclick="plusQuantity('@item.Id')" id="increase">+</button>
                                         </div>
                                     </td>
                                     <td class="shoping__cart__total">
@@ -164,3 +164,35 @@
         }
     }
 </script>
+<style>
+    .counter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn_counter {
+        width: 40px;
+        height: 40px;
+        border: none;
+        background-color: #f0f0f0;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    input[type="number"] {
+        width: 60px;
+        height: 40px;
+        text-align: center;
+        font-size: 16px;
+        border: none;
+        -moz-appearance: textfield; /* Firefox */
+    }
+
+        /* Ẩn nút tăng giảm mặc định cho Chrome, Safari, Edge */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+</style>

@@ -4,6 +4,7 @@
 }
 
 <div class="">
+    <a href="#" id="btnExportExcel"> &nbsp; <i class="fa fa-arrow-circle-down"></i> </a>
     <div class="row">
         <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -30,15 +31,15 @@
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>53<sup style="font-size: 20px">%</sup></h3>
-                    <p>Số lượng đơn bán</p>
+                    <h3 id="userCount"></h3>
+                    <p>Số lượng người dùng</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                 </div>
                 <a href="#" class="small-box-footer">
                     <i class="fas fa-arrow-circle-right">
-                        <small>Date: <span id="newOrdersDate"></span></small>
+                        <small>Date: <span id="newOrdersDate1"></span></small>
                     </i>
                 </a>
             </div>
@@ -48,16 +49,15 @@
             <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>44</h3>
-
-                    <p>User Registrations</p>
+                    <h3 id="totalProductsSold"></h3>
+                    <p>Số sản phẩm đã bán/mua</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-person-add"></i>
+                    <i class="ion ion-stats-bars"></i>
                 </div>
                 <a href="#" class="small-box-footer">
                     <i class="fas fa-arrow-circle-right">
-                        <small>Date: <span id="newOrdersDate"></span></small>
+                        <small>Date: <span id="newOrdersDate2"></span></small>
                     </i>
                 </a>
             </div>
@@ -67,16 +67,15 @@
             <!-- small box -->
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>65</h3>
-
-                    <p>Unique Visitors</p>
+                    <h3 id="totalRevenue"></h3>
+                    <p>Tổng Doanh Thu</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
+                    <i class="ion ion-cash"></i>
                 </div>
                 <a href="#" class="small-box-footer">
                     <i class="fas fa-arrow-circle-right">
-                        <small>Date: <span id="newOrdersDate"></span></small>
+                        <small>Date: <span id="newOrdersDate3"></span></small>
                     </i>
                 </a>
             </div>
@@ -88,14 +87,6 @@
 <div class="card card-success">
     <div class="card-header">
         <h3 class="card-title">Thống kê doanh thu</h3>
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
     </div>
     <div class="card-body">
         <div class="row">
@@ -104,7 +95,7 @@
                     <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" style="height: 300px; overflow-y: scroll;">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -121,6 +112,58 @@
     </div>
     <!-- /.card-body -->
 </div>
+<div class="card card-success" style="margin-top:20px">
+    <div class="card-header">
+        <h3 class="card-title">Thống kê sản phẩm được mua/bán nhiều nhất</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="chart">
+                    <canvas id="barChart2" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+            </div>
+            <div class="col-md-4" style="height: 300px; overflow-y: scroll;">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Tổng lượt mua</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loadData2"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-success" style="margin-top:20px">
+    <div class="card-header">
+        <h3 class="card-title">Biểu Đồ Đường Giờ Cao Điểm Mua/Bán</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <canvas id="peakHoursChart" style="height:250px;"></canvas>
+            </div>
+           @* <div class="col-md-4" style="height: 300px; overflow-y: scroll;">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tổng đơn hàng</th>
+                            <th>Tổng Doanh Thu</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loadData3"></tbody>
+                </table>
+            </div>*@
+        </div>
+    </div>
+</div>
+
 <!-- /.card -->
 @section scripts
     {
@@ -190,7 +233,14 @@
                     var barChartOptions = {
                         responsive: true,
                         maintainAspectRatio: false,
-                        datasetFill: false
+                        datasetFill: false,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true // Đặt trục y bắt đầu từ 0
+                                }
+                            }]
+                        }
                     }
 
                     new Chart(barChartCanvas, {
@@ -215,7 +265,7 @@
                 });
                 $('#loadData').html(strHtml);
             }
-
+            //hiển thị số lượng đơn hàng của user
             $.ajax({
                 url: '/admin/ManageStatistical/GetOrderStatistics',
                 type: 'GET',
@@ -231,6 +281,193 @@
                     console.error('An error occurred while retrieving order statistics:', error);
                 }
             });
+            //hiển thị số lượng người dùng trong hệ thống
+            $.ajax({
+                url: '/admin/ManageStatistical/GetUserStatistics',
+                type: 'GET',
+                success: function (result) {
+                    console.log('User Statistics:', result);
+                    var firstStatistic = result.userStatistic[0];
+                    $('#userCount').text(result.totalUsers);
+                    $('#newOrdersDate1').text(moment(firstStatistic.date).format('DD/MM/YYYY'));
+
+                },
+                error: function (error) {
+                    console.error('An error occurred while retrieving user statistics:', error);
+                }
+            });
+            //hiển thị số sản phẩm đã mua/bán
+            $.ajax({
+                url: '/admin/ManageStatistical/GetTotalProductsSold',
+                type: 'GET',
+                success: function (result) {
+                    console.log('Total Products Sold:', result);
+                    var firstStatistic = result.productStatistic[0];
+                    $('#totalProductsSold').text(result.totalProductsSold);
+                    $('#newOrdersDate2').text(moment(firstStatistic.date).format('DD/MM/YYYY'));
+
+                },
+                error: function (error) {
+                    console.error('Error fetching total products sold:', error);
+                }
+            });
+            //hiển thị doanh thu tổng
+            $.ajax({
+                url: '/admin/ManageStatistical/GetTotalRevenue',
+                type: 'GET',
+                success: function (result) {
+                    console.log('Total Revenue:', result);
+                    $('#totalRevenue').text(formatNumberWithCurrency(result.totalRevenue));
+                },
+                error: function (error) {
+                    console.error('Error fetching total revenue:', error);
+                }
+            });
+            //Thống kê sản phẩm
+            // Second Chart (Số lượng sản phẩm đã mua/bán)
+            $.ajax({
+                url: '/admin/ManageStatistical/GetProductStatistics',
+                type: 'GET',
+                success: function (result) {
+                    // Tạo mảng chứa tên sản phẩm và số lượng mua
+                    var productNames = [];
+                    var productQuantities = [];
+
+                    // Lặp qua kết quả và lấy dữ liệu cần thiết
+                    for (var i = 0; i < result.length; i++) {
+                        productNames.push(result[i].productName);
+                        productQuantities.push(result[i].quantity);
+                    }
+
+                    // Cấu hình biểu đồ cho chart 2
+                    var barChartCanvas2 = $('#barChart2').get(0).getContext('2d');
+                    var barChartData2 = {
+                        labels: productNames,
+                        datasets: [
+                            {
+                                label: 'Số lượng mua',
+                                backgroundColor: 'rgba(60,141,188,0.9)',
+                                borderColor: 'rgba(60,141,188,0.8)',
+                                pointRadius: false,
+                                pointColor: '#3b8bba',
+                                pointStrokeColor: 'rgba(60,141,188,1)',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(60,141,188,1)',
+                                data: productQuantities
+                            }
+                        ]
+                    };
+
+                    var barChartOptions2 = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        datasetFill: false,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true // Đặt trục y bắt đầu từ 0
+                                }
+                            }]
+                        }
+                    };
+
+                    new Chart(barChartCanvas2, {
+                        type: 'bar',
+                        data: barChartData2,
+                        options: barChartOptions2
+                    });
+                    // Load dữ liệu vào bảng
+                    var strHtml2 = "";
+                    for (var i = 0; i < productNames.length; i++) {
+                        strHtml2 += "<tr>";
+                        strHtml2 += "<td>" + (i + 1) + "</td>";
+                        strHtml2 += "<td>" + productNames[i] + "</td>";
+                        strHtml2 += "<td>" + productQuantities[i] + "</td>";
+                        strHtml2 += "</tr>";
+                    }
+                    $('#loadData2').html(strHtml2);
+                },
+                error: function (error) {
+                    console.error('An error occurred while retrieving product statistics:', error);
+                }
+            });
+            //Biểu đồ đường thể hiện khung giờ người dùng mua/bán nhiều nhất
+            var hours = Array.from({ length: 24 }, (_, i) => i + 'h');
+            // Hàm để lấy dữ liệu và render biểu đồ
+            function fetchAndRenderPeakHoursChart() {
+                $.ajax({
+                    url: '/admin/ManageStatistical/GetPeakHourStatistics',
+                    type: 'GET',
+                    success: function (data) {
+                        // Xử lý dữ liệu trả về
+                        var totalOrders = hours.map(h => {
+                            var hour = parseInt(h);
+                            var found = data.find(d => d.hour === hour);
+                            return found ? found.totalOrders : 0;
+                        });
+
+                        var totalRevenue = hours.map(h => {
+                            var hour = parseInt(h);
+                            var found = data.find(d => d.hour === hour);
+                            return found ? found.totalRevenue : 0;
+                        });
+
+                        // Render biểu đồ
+                        renderPeakHoursChart(hours, totalOrders, totalRevenue);
+                        //updatePeakHoursTable(data);
+
+                    },
+                    error: function (error) {
+                        console.error('Error fetching peak hour data:', error);
+                    }
+                });
+            }
+            // Hàm để render biểu đồ
+            function renderPeakHoursChart(labels, totalOrders, totalRevenue) {
+                var ctx = $('#peakHoursChart').get(0).getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Tổng Đơn Hàng',
+                                data: totalOrders,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Doanh Thu',
+                                data: totalRevenue,
+                                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                                borderColor: 'rgba(255, 206, 86, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+            // Gọi hàm để lấy dữ liệu và render biểu đồ
+            fetchAndRenderPeakHoursChart();
+            //Xuất file Excel, PDF
+            //$('btnExportExcel').on('click', function(){
+            //    ajax{(
+            //        datatype: 'json',
+            //        type: 'GET',
+            //            url: '/admin/ManageStatistical/Index',
+            //        success:function(){
+            //            var wb = new XLWorkbook();
+            //        }
+            //    )}
+            //})
         });
     </script>
 }

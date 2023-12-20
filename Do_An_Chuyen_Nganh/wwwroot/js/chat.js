@@ -64,7 +64,7 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     var message = document.getElementById("messageInput").value;
 
     if (receiverId && message) {
-        //var ul = document.getElementById("messagesList");
+        var ul = document.getElementById("messagesList");
         //var li = document.createElement("li");
         //li.textContent = `You: ${message}`;
         //ul.appendChild(li);

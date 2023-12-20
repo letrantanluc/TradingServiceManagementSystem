@@ -9,9 +9,11 @@ using Do_An_Chuyen_Nganh.Data;
 using Do_An_Chuyen_Nganh.Models;
 using Microsoft.AspNetCore.Authentication;
 using Do_An_Chuyen_Nganh.Controllers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     [Route("Admin/ManageCategory")]
     public class ManageCategoryController : BaseController<Category>

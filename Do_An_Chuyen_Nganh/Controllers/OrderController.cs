@@ -165,7 +165,6 @@ namespace Do_An_Chuyen_Nganh.Controllers
                 var Payment = Order.Payment;
                 var Email = Order.Email;
 
-
                 if (string.IsNullOrEmpty(CustomerName))
                 {
                     errors.Add("Vui lòng nhập tên.");
@@ -226,32 +225,31 @@ namespace Do_An_Chuyen_Nganh.Controllers
                             return RedirectToAction("VNPay", "Pay");
                         default:
                             totalOrder = 0;
+                            // Save the order details
                             foreach (var item in cart)
                             {
                                 var itemTotal = item.Price * item.Quantity;
                                 foreach (var option in cart)
                                 {
-                                    itemTotal += option.Price * item.Quantity;
+                                    //itemTotal += option.Price * item.Quantity;
                                 }
                                 OrderDetail orderDetail = new OrderDetail();
                                 orderDetail.Order = order;
                                 orderDetail.ProductId = item.ProductId;
-
                                 orderDetail.Price = item.Price;
                                 orderDetail.Total = itemTotal;
                                 orderDetail.Quantity = item.Quantity;
-                                totalOrder += itemTotal;
                                 _context.OrderDetails.Add(orderDetail);
-                                _context.SaveChanges();
                             }
-                            //Cập nhật tổng số tiền
-                            order.Total = totalOrder;
 
-                            Update(order);
+                            // Cập nhật tổng số tiền
+                            _context.SaveChanges();
+
+                            // Clear the cart and complete the order
                             _cartManager.ClearCart();
-                            break;
+
+                            return RedirectToAction("CompleteOrder", "Order");
                     }
-                    return RedirectToAction("CompleteOrder", "Order");
                 }
             }
             catch (Exception ex)

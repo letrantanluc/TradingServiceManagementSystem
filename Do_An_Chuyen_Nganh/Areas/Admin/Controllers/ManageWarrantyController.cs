@@ -1,10 +1,12 @@
 ﻿using Do_An_Chuyen_Nganh.Controllers;
 using Do_An_Chuyen_Nganh.Data;
 using Do_An_Chuyen_Nganh.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     [Route("Admin/ManageWarranty")]
     public class ManageWarrantyController : BaseController<Warranty>
