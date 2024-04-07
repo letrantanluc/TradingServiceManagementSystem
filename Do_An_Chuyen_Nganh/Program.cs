@@ -13,8 +13,10 @@ var modelbuilder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = modelbuilder.Configuration.GetConnectionString("DefaultConnection");
+//modelbuilder.Services.AddDbContext<ApplicationDbContext>(options =>
+//    options.UseSqlServer(connectionString));
 modelbuilder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseOracle(connectionString));
 modelbuilder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 modelbuilder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
