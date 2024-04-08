@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    const host = "https://provinces.open-api.vn/api/";
+    const host = "https://localhost:7064/api/";
 
     var callAPI = (api) => {
         return axios.get(api)
@@ -13,19 +13,19 @@
     }
 
     // Gọi hàm callAPI để tải dữ liệu tỉnh khi trang web được tải
-    callAPI('https://provinces.open-api.vn/api/?depth=1');  // API các tỉnh
+    callAPI('https://localhost:7064/api/Province');  // API các tỉnh
 
     var callApiDistrict = (api) => {
         return axios.get(api)
             .then((response) => {
-                renderData(response.data.districts, "district1");
+                renderData(response.data, "district1");
             });
     }
 
     var callApiWard = (api) => {
         return axios.get(api)
             .then((response) => {
-                renderData(response.data.wards, "ward1");
+                renderData(response.data, "ward1");
             });
     }
 
@@ -33,20 +33,23 @@
         console.log(array);  // In ra dữ liệu để kiểm tra
         let row = ' <option value="">chọn</option>';
         array.forEach(element => {
-            row += `<option value="${element.code}">${element.name}</option>`;
+            row += `<option value="${element.code}">${element.fullName}</option>`;
         });
         document.querySelector("#" + select).innerHTML = row;
     }
 
     $("#province1").change(() => {
         console.log("Thay đổi tỉnh");
-        callApiDistrict(host + "p/" + $("#province1").val() + "?depth=2");
+        $("#district1").html("<option value=''>Chọn</option>");
+        $("#ward1").html("<option value=''>Chọn</option>");
+        callApiDistrict(host + "District/" + $("#province1").val() + "");
         printResult();
     });
 
     $("#district1").change(() => {
         console.log("Thay đổi quận/huyện");
-        callApiWard(host + "d/" + $("#district1").val() + "?depth=2");
+        $("#ward1").html("<option value=''>Chọn</option>");
+        callApiWard(host + "Ward/" + $("#district1").val() + "");
         printResult();
     });
 
@@ -71,5 +74,18 @@
     console.log("provinceSelect:", provinceSelect);
     console.log("districtSelect:", districtSelect);
     console.log("wardSelect:", wardSelect);
+    // Xóa thuộc tính style display
+    if (provinceSelect) provinceSelect.style.display = "block";
+    if (districtSelect) districtSelect.style.display = "block";
+    if (wardSelect) wardSelect.style.display = "block";
+    // Lấy phần tử select có id là "ward1"
+    var selectElement = document.getElementById('ward1');
+
+    // Kiểm tra xem phần tử có tồn tại và có phần tử em (sibling) tiếp theo không
+    if (selectElement && selectElement.nextElementSibling) {
+        // Lấy phần tử em (sibling) tiếp theo và xóa nó khỏi DOM
+        var nextElement = selectElement.nextElementSibling;
+        nextElement.parentNode.removeChild(nextElement);
+    }
 
 });
