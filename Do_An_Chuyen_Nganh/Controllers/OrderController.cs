@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Oracle.ManagedDataAccess.Client;
 using System.Text.RegularExpressions;
 
 namespace Do_An_Chuyen_Nganh.Controllers
@@ -48,6 +49,10 @@ namespace Do_An_Chuyen_Nganh.Controllers
             if (cart.Count() < 1)
             {
                 return RedirectToAction("Index", "Home");
+            }
+            if (TempData["Errors"] != null)
+            {
+                ViewBag.Errors = TempData["Errors"];
             }
             ViewBag.Carts = cart;
             return View(new Order());
@@ -157,106 +162,123 @@ namespace Do_An_Chuyen_Nganh.Controllers
         public ActionResult CheckOut(Order Order)
         {
             List<string> errors = new List<string>();
-            try
-            {
-                var CustomerName = Order.CustomerName;
-                var PhoneNumber = Order.PhoneNumber;
-                var Address = Order.Address;
-                var Payment = Order.Payment;
-                var Email = Order.Email;
-
-                if (string.IsNullOrEmpty(CustomerName))
+                try
                 {
-                    errors.Add("Vui lòng nhập tên.");
-                }
+                    var CustomerName = Order.CustomerName;
+                    var PhoneNumber = Order.PhoneNumber;
+                    var Address = Order.Address;
+                    var Payment = Order.Payment;
+                    var Email = Order.Email;
 
-                if (string.IsNullOrEmpty(Address))
-                {
-                    errors.Add("Vui lòng nhập địa chỉ.");
-                }
-
-                if (PhoneNumber != null && !ValidateVNPhoneNumber(PhoneNumber))
-                {
-                    errors.Add("Số điện thoại không hợp lệ.");
-                }
-
-                switch (Payment)
-                {
-                    case "cash":
-                    case "momo":
-                    case "vnpay":
-
-                        break;
-                    default:
-                        errors.Add("Phương thức thanh toán không hợp lệ.");
-                        break;
-                }
-
-                if (errors.Count == 0)
-                {
-                    Order order = new Order();
-
-                    string code = RandomString(12);
-                    order.Code = code;
-                    order.CustomerName = CustomerName;
-                    order.PhoneNumber = PhoneNumber;
-                    order.Address = Address;
-                    order.Payment = Payment;
-                    order.Email = Email;
-                    order.UserId = _userManager.GetUserId(User);
-
-
-                    HttpContext.Session.SetString("orderCode", code);
-
-                    var cart = _cartManager.GetCartItems();
-                    decimal totalOrder = 0;
-                    foreach (var item in cart)
+                    if (string.IsNullOrEmpty(CustomerName))
                     {
-                        var itemTotal = item.Price * item.Quantity;
-                        totalOrder += itemTotal;
+                        errors.Add("Vui lòng nhập tên.");
                     }
-                    order.Total = totalOrder;
-                    HttpContext.Session.SetObject("order", order);
+
+                    if (string.IsNullOrEmpty(Address))
+                    {
+                        errors.Add("Vui lòng nhập địa chỉ.");
+                    }
+
+                    //if (PhoneNumber != null && !ValidateVNPhoneNumber(PhoneNumber))
+                    //{
+                    //    errors.Add("Số điện thoại không hợp lệ.");
+                    //}
+
                     switch (Payment)
                     {
+                        case "cash":
                         case "momo":
-                            return RedirectToAction("MomoPay", "Pay");
                         case "vnpay":
-                            return RedirectToAction("VNPay", "Pay");
+
+                            break;
                         default:
-                            totalOrder = 0;
-                            // Save the order details
-                            foreach (var item in cart)
-                            {
-                                var itemTotal = item.Price * item.Quantity;
-                                foreach (var option in cart)
+                            errors.Add("Phương thức thanh toán không hợp lệ.");
+                            break;
+                    }
+
+                    if (errors.Count == 0)
+                    {
+                        Order order = new Order();
+
+                        string code = RandomString(12);
+                        order.Code = code;
+                        order.CustomerName = CustomerName;
+                        order.PhoneNumber = PhoneNumber;
+                        order.Address = Address;
+                        order.Payment = Payment;
+                        order.Email = Email;
+                        order.UserId = _userManager.GetUserId(User);
+
+
+                        HttpContext.Session.SetString("orderCode", code);
+
+                        var cart = _cartManager.GetCartItems();
+                        decimal totalOrder = 0;
+                        foreach (var item in cart)
+                        {
+                            var itemTotal = item.Price * item.Quantity;
+                            totalOrder += itemTotal;
+                        }
+                        order.Total = totalOrder;
+                        HttpContext.Session.SetObject("order", order);
+                        switch (Payment)
+                        {
+                            case "momo":
+                                return RedirectToAction("MomoPay", "Pay");
+                            case "vnpay":
+                                return RedirectToAction("VNPay", "Pay");
+                            default:
+                                totalOrder = 0;
+                                // Save the order details
+                                foreach (var item in cart)
                                 {
-                                    //itemTotal += option.Price * item.Quantity;
+                                    var itemTotal = item.Price * item.Quantity;
+                                    foreach (var option in cart)
+                                    {
+                                        //itemTotal += option.Price * item.Quantity;
+                                    }
+                                    OrderDetail orderDetail = new OrderDetail();
+                                    orderDetail.Order = order;
+                                    orderDetail.ProductId = item.ProductId;
+                                    orderDetail.Price = item.Price;
+                                    orderDetail.Total = itemTotal;
+                                    orderDetail.Quantity = item.Quantity;
+                                    _context.OrderDetails.Add(orderDetail);
                                 }
-                                OrderDetail orderDetail = new OrderDetail();
-                                orderDetail.Order = order;
-                                orderDetail.ProductId = item.ProductId;
-                                orderDetail.Price = item.Price;
-                                orderDetail.Total = itemTotal;
-                                orderDetail.Quantity = item.Quantity;
-                                _context.OrderDetails.Add(orderDetail);
-                            }
 
-                            // Cập nhật tổng số tiền
-                            _context.SaveChanges();
+                                // Cập nhật tổng số tiền
+                                _context.SaveChanges();
 
-                            // Clear the cart and complete the order
-                            _cartManager.ClearCart();
+                                // Clear the cart and complete the order
+                                _cartManager.ClearCart();
 
-                            return RedirectToAction("CompleteOrder", "Order");
+                                return RedirectToAction("CompleteOrder", "Order");
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.Message);
-            }
+                catch (DbUpdateException ex)
+                {
+                    //errors.Add(ex1.Message);
+                    // Xử lý lỗi từ DbUpdateException
+                    if (ex.InnerException is OracleException oracleException)
+                    {
+                        // Lấy thông điệp lỗi từ cột "Error_Message"
+                        string errorMessage = oracleException.Message; // Thông điệp lỗi sẽ được trích xuất từ oracleException.Message
+                        //ModelState.AddModelError("", errorMessage); // Thêm thông điệp lỗi vào ModelState
+                        errors.Add(errorMessage);
+                    }
+                    else
+                    {
+                        throw; // Ném lại lỗi nếu không phải là lỗi từ trigger
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errors.Add(ex.Message);
+                }
             TempData["Errors"] = errors;
+            //List<string> ErrorsTemp = TempData["Errors"] as List<string>;
             return RedirectToAction("CheckOut", "Order");
         }
 

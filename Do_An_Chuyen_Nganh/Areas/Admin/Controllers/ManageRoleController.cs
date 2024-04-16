@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Do_An_Chuyen_Nganh.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [Area("Admin")]
     [Route("Admin/ManageRole")]
     public class ManageRoleController : BaseController<IdentityRole>
