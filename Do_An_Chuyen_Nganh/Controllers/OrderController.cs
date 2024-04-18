@@ -7,8 +7,10 @@ using Do_An_Chuyen_Nganh.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Logging;
 using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
+using System.Configuration;
 using System.Text.RegularExpressions;
 
 namespace Do_An_Chuyen_Nganh.Controllers
@@ -17,11 +19,14 @@ namespace Do_An_Chuyen_Nganh.Controllers
     {
         private readonly CartManager _cartManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly IConfiguration _configuration;
+
 
         public OrderController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor) : base(context)
         {
             _cartManager = new CartManager(httpContextAccessor);
             _userManager = userManager;
+            
         }
 
         public static bool ValidateVNPhoneNumber(string phoneNumber)
@@ -56,6 +61,17 @@ namespace Do_An_Chuyen_Nganh.Controllers
             }
             ViewBag.Carts = cart;
             return View(new Order());
+        }
+        static string ExtractTextBetween(string input)
+        {
+            Match match = Regex.Match(input, @"ORA-\d+: (.*)");
+
+            if (match.Success)
+            {
+                return match.Groups[1].Value.Trim();
+            }
+
+            return "Không tìm thấy thông điệp lỗi";
         }
         [HttpPost]
         //public ActionResult CheckOut(Order Order)
@@ -158,7 +174,7 @@ namespace Do_An_Chuyen_Nganh.Controllers
         //    TempData["Errors"] = errors;
         //    return RedirectToAction("CheckOut", "Order");
         //}
-
+        
         public ActionResult CheckOut(Order Order)
         {
             List<string> errors = new List<string>();
@@ -213,15 +229,25 @@ namespace Do_An_Chuyen_Nganh.Controllers
 
                         HttpContext.Session.SetString("orderCode", code);
 
-                        var cart = _cartManager.GetCartItems();
-                        decimal totalOrder = 0;
-                        foreach (var item in cart)
-                        {
-                            var itemTotal = item.Price * item.Quantity;
-                            totalOrder += itemTotal;
-                        }
-                        order.Total = totalOrder;
-                        HttpContext.Session.SetObject("order", order);
+                    var cart = _cartManager.GetCartItems();
+                    decimal totalOrder = 0;
+                    foreach (var item in cart)
+                    {
+                        var itemTotal = item.Price * item.Quantity;
+                        totalOrder += itemTotal;
+                    }
+                    order.Total = totalOrder;
+
+                    // gọi function TinhTongDonHang từ Oracle
+                    //var oracleHelper = new OracleHelper(_configuration);
+
+                    //decimal totalOrder = oracleHelper.TinhTongDonHang(Order.Id);
+
+                    //order.Total = totalOrder;
+                    Console.WriteLine("Tổng đơn hàng: " + totalOrder);
+
+
+                    HttpContext.Session.SetObject("order", order);
                         switch (Payment)
                         {
                             case "momo":
@@ -230,8 +256,8 @@ namespace Do_An_Chuyen_Nganh.Controllers
                                 return RedirectToAction("VNPay", "Pay");
                             default:
                                 totalOrder = 0;
-                                // Save the order details
-                                foreach (var item in cart)
+                            // Save the order details
+                            foreach (var item in cart)
                                 {
                                     var itemTotal = item.Price * item.Quantity;
                                     foreach (var option in cart)
@@ -259,20 +285,17 @@ namespace Do_An_Chuyen_Nganh.Controllers
                 }
                 catch (DbUpdateException ex)
                 {
-                    //errors.Add(ex1.Message);
-                    // Xử lý lỗi từ DbUpdateException
-                    if (ex.InnerException is OracleException oracleException)
-                    {
-                        // Lấy thông điệp lỗi từ cột "Error_Message"
-                        string errorMessage = oracleException.Message; // Thông điệp lỗi sẽ được trích xuất từ oracleException.Message
-                        //ModelState.AddModelError("", errorMessage); // Thêm thông điệp lỗi vào ModelState
-                        errors.Add(errorMessage);
-                    }
-                    else
-                    {
-                        throw; // Ném lại lỗi nếu không phải là lỗi từ trigger
-                    }
+                if (ex.InnerException is OracleException oracleException)
+                {
+                    string errorMessage = oracleException.Message; // Lấy toàn bộ thông điệp lỗi từ exception
+                    string errorDescription = ExtractTextBetween(errorMessage); // Trích xuất phần thông điệp lỗi
+                    errors.Add(errorDescription); // Thêm phần đã trích xuất vào danh sách lỗi
                 }
+                else
+                {
+                    throw; // Ném lại ngoại lệ nếu không phải là OracleException
+                }
+            }
                 catch (Exception ex)
                 {
                     errors.Add(ex.Message);
