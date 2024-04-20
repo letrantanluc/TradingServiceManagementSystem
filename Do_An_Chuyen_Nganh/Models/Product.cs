@@ -64,7 +64,7 @@ namespace Do_An_Chuyen_Nganh.Models
 
         public virtual ICollection<ProductImage>? Images { get; set; }
         public ProductStatus Status { get; set; } = ProductStatus.Pending;
-
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 
 }

@@ -13,6 +13,7 @@
     <div class="card">
         <h2>Đăng tin mới</h2>
         <div class="card__body ">
+            <partial name="_ErrorsAlert" />
             <form asp-action="Create" method="post" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -72,7 +73,7 @@
                                 </select>                          
                         </div>
                         <div class="">
-                            <input name="Diachi"  type="text" placeholder="nhập địa chỉ chi tiết" oninput="updateAddressInput(this)">
+                            <input name="Diachi"  type="text" placeholder="nhập địa chỉ chi tiết" onchange="updateAddressInput(this)">
                         </div>                     
                         <input type="hidden"  id="UpdatedAddress" asp-for="Address" />
                     </div>

@@ -7,6 +7,8 @@ using Do_An_Chuyen_Nganh.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Do_An_Chuyen_Nganh.Models.Enums;
+using Oracle.ManagedDataAccess.Client;
+using System.Text.RegularExpressions;
 
 namespace Do_An_Chuyen_Nganh.Controllers
 {
@@ -161,6 +163,17 @@ namespace Do_An_Chuyen_Nganh.Controllers
             }
         //--------------------------------------------------------------------------------------------------
         // --------------------------------------------- Đăng tin ---------------------------------------------------
+        static string ExtractTextBetween(string input)
+        {
+            Match match = Regex.Match(input, @"ORA-\d+: (.*)");
+
+            if (match.Success)
+            {
+                return match.Groups[1].Value.Trim();
+            }
+
+            return "Không tìm thấy thông điệp lỗi";
+        }
         [Authorize]
         public IActionResult Create()
         {
@@ -174,56 +187,81 @@ namespace Do_An_Chuyen_Nganh.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ImageFile,Address,Quantity,CategoryId,ColorId,ConditionId,ProvenienceId,WarrantyId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,ImageFile,Address,Quantity,CategoryId,ColorId,ConditionId,ProvenienceId,WarrantyId, CreatedAt")] Product product)
         {
-            // Kiểm tra điều kiện: ít nhất 1 ảnh phải được chọn
-            if (product.ImageFile == null || product.ImageFile.Count == 0)
+            List<string> errors = new List<string>();
+            try
             {
-                ModelState.AddModelError("ImageFile", "Ít nhất 1 ảnh phải được chọn.");
-            }
-            if (ModelState.IsValid)
-            {
-                var userId = _userManager.GetUserId(User);
-                var user = _context.Users.Where(x => x.Id == userId).FirstOrDefault();
-                product.UserId = userId;
-                product.UserName = user.UserName;
-
-                // Thêm sản phẩm trước khi không có hình ảnh
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-
-                // Xử lý các tệp hình ảnh
-                if (product.ImageFile != null && product.ImageFile.Count > 0)
+                // Kiểm tra điều kiện: ít nhất 1 ảnh phải được chọn
+                if (product.ImageFile == null || product.ImageFile.Count == 0)
                 {
-                    foreach (var file in product.ImageFile)
-                    {
-                        var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                        var path = Path.Combine(_env.WebRootPath, "images", uniqueFileName);
+                    ModelState.AddModelError("ImageFile", "Ít nhất 1 ảnh phải được chọn.");
+                }
+                if (ModelState.IsValid)
+                {
+                    var userId = _userManager.GetUserId(User);
+                    var user = _context.Users.Where(x => x.Id == userId).FirstOrDefault();
+                    product.UserId = userId;
+                    product.UserName = user.UserName;
+                    // Set giá trị cho CreatedAt
+                    product.CreatedAt = DateTime.Now;
 
-                        using (var stream = new FileStream(path, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-
-                        // Lưu mỗi đường dẫn hình ảnh duy nhất vào cơ sở dữ liệu
-                        var productImage = new ProductImage
-                        {
-                            ImagePath = uniqueFileName,
-                            ProductId = product.Id
-                        };
-                        _context.ProductImages.Add(productImage);
-                    }
+                    // Thêm sản phẩm trước khi không có hình ảnh
+                    _context.Add(product);
                     await _context.SaveChangesAsync();
+
+                    // Xử lý các tệp hình ảnh
+                    if (product.ImageFile != null && product.ImageFile.Count > 0)
+                    {
+                        foreach (var file in product.ImageFile)
+                        {
+                            var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                            var path = Path.Combine(_env.WebRootPath, "images", uniqueFileName);
+
+                            using (var stream = new FileStream(path, FileMode.Create))
+                            {
+                                await file.CopyToAsync(stream);
+                            }
+
+                            // Lưu mỗi đường dẫn hình ảnh duy nhất vào cơ sở dữ liệu
+                            var productImage = new ProductImage
+                            {
+                                ImagePath = uniqueFileName,
+                                ProductId = product.Id
+                            };
+                            _context.ProductImages.Add(productImage);
+                        }
+                        await _context.SaveChangesAsync();
+                    }
+
+                    return RedirectToAction("Index", "Home");
                 }
 
-                return RedirectToAction("Index", "Home");
+                ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
+                ViewData["ColorId"] = new SelectList(_context.Colors, "Id", "ColorName", product.ColorId);
+                ViewData["ConditionId"] = new SelectList(_context.Conditions, "Id", "ConditionName", product.ConditionId);
+                ViewData["ProvenienceId"] = new SelectList(_context.Proveniences, "Id", "ProvenienceName", product.ProvenienceId);
+                ViewData["WarrantyId"] = new SelectList(_context.Warranties, "Id", "WarrantyName", product.WarrantyId);
             }
-
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
-            ViewData["ColorId"] = new SelectList(_context.Colors, "Id", "ColorName", product.ColorId);
-            ViewData["ConditionId"] = new SelectList(_context.Conditions, "Id", "ConditionName", product.ConditionId);
-            ViewData["ProvenienceId"] = new SelectList(_context.Proveniences, "Id", "ProvenienceName", product.ProvenienceId);
-            ViewData["WarrantyId"] = new SelectList(_context.Warranties, "Id", "WarrantyName", product.WarrantyId);
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException is OracleException oracleException)
+                {
+                    string errorMessage = oracleException.Message;
+                    // Lấy toàn bộ thông điệp lỗi từ exception
+                    string errorDescription = ExtractTextBetween(errorMessage); // Trích xuất phần thông điệp lỗi
+                    errors.Add(errorDescription); // Thêm phần đã trích xuất vào danh sách lỗi
+                }
+                else
+                {
+                    throw; // Ném lại ngoại lệ nếu không phải là OracleException
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.Message);
+            }
+            TempData["Errors"] = errors;
             return View(product);
         }
 

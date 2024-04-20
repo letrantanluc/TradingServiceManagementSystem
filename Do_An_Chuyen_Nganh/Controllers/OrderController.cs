@@ -7,7 +7,10 @@ using Do_An_Chuyen_Nganh.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Logging;
 using Microsoft.EntityFrameworkCore;
+using Oracle.ManagedDataAccess.Client;
+using System.Configuration;
 using System.Text.RegularExpressions;
 
 namespace Do_An_Chuyen_Nganh.Controllers
@@ -16,11 +19,14 @@ namespace Do_An_Chuyen_Nganh.Controllers
     {
         private readonly CartManager _cartManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly IConfiguration _configuration;
+
 
         public OrderController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor) : base(context)
         {
             _cartManager = new CartManager(httpContextAccessor);
             _userManager = userManager;
+            
         }
 
         public static bool ValidateVNPhoneNumber(string phoneNumber)
@@ -49,8 +55,23 @@ namespace Do_An_Chuyen_Nganh.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+            if (TempData["Errors"] != null)
+            {
+                ViewBag.Errors = TempData["Errors"];
+            }
             ViewBag.Carts = cart;
             return View(new Order());
+        }
+        static string ExtractTextBetween(string input)
+        {
+            Match match = Regex.Match(input, @"ORA-\d+: (.*)");
+
+            if (match.Success)
+            {
+                return match.Groups[1].Value.Trim();
+            }
+
+            return "Không tìm thấy thông điệp lỗi";
         }
         [HttpPost]
         //public ActionResult CheckOut(Order Order)
@@ -153,60 +174,60 @@ namespace Do_An_Chuyen_Nganh.Controllers
         //    TempData["Errors"] = errors;
         //    return RedirectToAction("CheckOut", "Order");
         //}
-
+        
         public ActionResult CheckOut(Order Order)
         {
             List<string> errors = new List<string>();
-            try
-            {
-                var CustomerName = Order.CustomerName;
-                var PhoneNumber = Order.PhoneNumber;
-                var Address = Order.Address;
-                var Payment = Order.Payment;
-                var Email = Order.Email;
-
-                if (string.IsNullOrEmpty(CustomerName))
+                try
                 {
-                    errors.Add("Vui lòng nhập tên.");
-                }
+                    var CustomerName = Order.CustomerName;
+                    var PhoneNumber = Order.PhoneNumber;
+                    var Address = Order.Address;
+                    var Payment = Order.Payment;
+                    var Email = Order.Email;
 
-                if (string.IsNullOrEmpty(Address))
-                {
-                    errors.Add("Vui lòng nhập địa chỉ.");
-                }
+                    if (string.IsNullOrEmpty(CustomerName))
+                    {
+                        errors.Add("Vui lòng nhập tên.");
+                    }
 
-                if (PhoneNumber != null && !ValidateVNPhoneNumber(PhoneNumber))
-                {
-                    errors.Add("Số điện thoại không hợp lệ.");
-                }
+                    if (string.IsNullOrEmpty(Address))
+                    {
+                        errors.Add("Vui lòng nhập địa chỉ.");
+                    }
 
-                switch (Payment)
-                {
-                    case "cash":
-                    case "momo":
-                    case "vnpay":
+                    //if (PhoneNumber != null && !ValidateVNPhoneNumber(PhoneNumber))
+                    //{
+                    //    errors.Add("Số điện thoại không hợp lệ.");
+                    //}
 
-                        break;
-                    default:
-                        errors.Add("Phương thức thanh toán không hợp lệ.");
-                        break;
-                }
+                    switch (Payment)
+                    {
+                        case "cash":
+                        case "momo":
+                        case "vnpay":
 
-                if (errors.Count == 0)
-                {
-                    Order order = new Order();
+                            break;
+                        default:
+                            errors.Add("Phương thức thanh toán không hợp lệ.");
+                            break;
+                    }
 
-                    string code = RandomString(12);
-                    order.Code = code;
-                    order.CustomerName = CustomerName;
-                    order.PhoneNumber = PhoneNumber;
-                    order.Address = Address;
-                    order.Payment = Payment;
-                    order.Email = Email;
-                    order.UserId = _userManager.GetUserId(User);
+                    if (errors.Count == 0)
+                    {
+                        Order order = new Order();
+
+                        string code = RandomString(12);
+                        order.Code = code;
+                        order.CustomerName = CustomerName;
+                        order.PhoneNumber = PhoneNumber;
+                        order.Address = Address;
+                        order.Payment = Payment;
+                        order.Email = Email;
+                        order.UserId = _userManager.GetUserId(User);
 
 
-                    HttpContext.Session.SetString("orderCode", code);
+                        HttpContext.Session.SetString("orderCode", code);
 
                     var cart = _cartManager.GetCartItems();
                     decimal totalOrder = 0;
@@ -216,47 +237,71 @@ namespace Do_An_Chuyen_Nganh.Controllers
                         totalOrder += itemTotal;
                     }
                     order.Total = totalOrder;
+
+                    // gọi function TinhTongDonHang từ Oracle
+                    //var oracleHelper = new OracleHelper(_configuration);
+
+                    //decimal totalOrder = oracleHelper.TinhTongDonHang(Order.Id);
+
+                    //order.Total = totalOrder;
+                    Console.WriteLine("Tổng đơn hàng: " + totalOrder);
+
+
                     HttpContext.Session.SetObject("order", order);
-                    switch (Payment)
-                    {
-                        case "momo":
-                            return RedirectToAction("MomoPay", "Pay");
-                        case "vnpay":
-                            return RedirectToAction("VNPay", "Pay");
-                        default:
-                            totalOrder = 0;
+                        switch (Payment)
+                        {
+                            case "momo":
+                                return RedirectToAction("MomoPay", "Pay");
+                            case "vnpay":
+                                return RedirectToAction("VNPay", "Pay");
+                            default:
+                                totalOrder = 0;
                             // Save the order details
                             foreach (var item in cart)
-                            {
-                                var itemTotal = item.Price * item.Quantity;
-                                foreach (var option in cart)
                                 {
-                                    //itemTotal += option.Price * item.Quantity;
+                                    var itemTotal = item.Price * item.Quantity;
+                                    foreach (var option in cart)
+                                    {
+                                        //itemTotal += option.Price * item.Quantity;
+                                    }
+                                    OrderDetail orderDetail = new OrderDetail();
+                                    orderDetail.Order = order;
+                                    orderDetail.ProductId = item.ProductId;
+                                    orderDetail.Price = item.Price;
+                                    orderDetail.Total = itemTotal;
+                                    orderDetail.Quantity = item.Quantity;
+                                    _context.OrderDetails.Add(orderDetail);
                                 }
-                                OrderDetail orderDetail = new OrderDetail();
-                                orderDetail.Order = order;
-                                orderDetail.ProductId = item.ProductId;
-                                orderDetail.Price = item.Price;
-                                orderDetail.Total = itemTotal;
-                                orderDetail.Quantity = item.Quantity;
-                                _context.OrderDetails.Add(orderDetail);
-                            }
 
-                            // Cập nhật tổng số tiền
-                            _context.SaveChanges();
+                                // Cập nhật tổng số tiền
+                                _context.SaveChanges();
 
-                            // Clear the cart and complete the order
-                            _cartManager.ClearCart();
+                                // Clear the cart and complete the order
+                                _cartManager.ClearCart();
 
-                            return RedirectToAction("CompleteOrder", "Order");
+                                return RedirectToAction("CompleteOrder", "Order");
+                        }
                     }
                 }
+                catch (DbUpdateException ex)
+                {
+                if (ex.InnerException is OracleException oracleException)
+                {
+                    string errorMessage = oracleException.Message; // Lấy toàn bộ thông điệp lỗi từ exception
+                    string errorDescription = ExtractTextBetween(errorMessage); // Trích xuất phần thông điệp lỗi
+                    errors.Add(errorDescription); // Thêm phần đã trích xuất vào danh sách lỗi
+                }
+                else
+                {
+                    throw; // Ném lại ngoại lệ nếu không phải là OracleException
+                }
             }
-            catch (Exception ex)
-            {
-                errors.Add(ex.Message);
-            }
+                catch (Exception ex)
+                {
+                    errors.Add(ex.Message);
+                }
             TempData["Errors"] = errors;
+            //List<string> ErrorsTemp = TempData["Errors"] as List<string>;
             return RedirectToAction("CheckOut", "Order");
         }
 
