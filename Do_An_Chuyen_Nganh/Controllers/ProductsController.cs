@@ -247,7 +247,8 @@ namespace Do_An_Chuyen_Nganh.Controllers
             {
                 if (ex.InnerException is OracleException oracleException)
                 {
-                    string errorMessage = oracleException.Message; // Lấy toàn bộ thông điệp lỗi từ exception
+                    string errorMessage = oracleException.Message;
+                    // Lấy toàn bộ thông điệp lỗi từ exception
                     string errorDescription = ExtractTextBetween(errorMessage); // Trích xuất phần thông điệp lỗi
                     errors.Add(errorDescription); // Thêm phần đã trích xuất vào danh sách lỗi
                 }
